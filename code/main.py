@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Ghost Data Still Exists — deletion-audit agent entry point.
 
+    python3 code/main.py
     python3 code/main.py --skeleton
     python3 code/main.py --evidence case_05
     python3 code/main.py --plan case_05
@@ -23,6 +24,7 @@ from agent.pipeline import (  # noqa: E402
     inspect_requests,
     plan_requests,
     score_sample,
+    write_output,
 )
 
 
@@ -50,8 +52,12 @@ def main() -> None:
     if "--score-sample" in args:
         print(score_sample(dataset))
         return
+    if not args or "--run" in args:
+        print(write_output(dataset, ROOT / "output.csv"))
+        return
 
     print("Commands:")
+    print("  python3 code/main.py")
     print("  python3 code/main.py --skeleton")
     print("  python3 code/main.py --evidence case_05")
     print("  python3 code/main.py --plan case_05")

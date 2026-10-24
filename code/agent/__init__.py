@@ -2,7 +2,7 @@
 
 from .classify import is_deletion_request
 from .identity import IdentityIndex, ResolvedIdentity
-from .pipeline import inspect_evidence, inspect_requests, plan_requests, score_sample
+from .pipeline import inspect_evidence, inspect_requests, plan_requests, score_sample, write_output
 
 __all__ = [
     "is_deletion_request",
@@ -12,4 +12,5 @@ __all__ = [
     "inspect_evidence",
     "plan_requests",
     "score_sample",
+    "write_output",
 ]

@@ -6,6 +6,7 @@ classify → identity → evidence → policy → planner
 from __future__ import annotations
 
 import csv
+from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -216,3 +217,39 @@ def score_sample(dataset_dir: Path) -> str:
         f"obs={len(store.observations)}"
     )
     return "\n".join(lines)
+
+
+def write_output(dataset_dir: Path, dest: Path) -> str:
+    """Audit every row in deletion_requests.csv → dest (root output.csv)."""
+    index = IdentityIndex(dataset_dir)
+    store = EvidenceStore(dataset_dir)
+    rules = load_rules(dataset_dir)
+    requests_csv = dataset_dir / "deletion_requests.csv"
+    with requests_csv.open(newline="", encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+    rows.sort(key=lambda row: int(row["case_id"].split("_")[1]))
+    out_rows: list[dict[str, str]] = []
+    for row in rows:
+        deletion = is_deletion_request(row.get("request_text") or "")
+        person = index.resolve(row.get("email") or "")
+        status, steps = plan_case(row, person, deletion, store, rules, dataset_dir, index)
+        out_rows.append(
+            {
+                "case_id": row["case_id"],
+                "deletion_status": status,
+                "steps_json": steps_to_json(steps),
+            }
+        )
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    with dest.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=["case_id", "deletion_status", "steps_json"])
+        writer.writeheader()
+        writer.writerows(out_rows)
+    counts = Counter(row["deletion_status"] for row in out_rows)
+    return (
+        f"wrote {dest}  rows={len(out_rows)}  "
+        f"COMPLETE={counts.get('COMPLETE', 0)}  "
+        f"INCOMPLETE={counts.get('INCOMPLETE', 0)}  "
+        f"NOT_APPLICABLE={counts.get('NOT_APPLICABLE', 0)}  "
+        f"obs={len(store.observations)}"
+    )
