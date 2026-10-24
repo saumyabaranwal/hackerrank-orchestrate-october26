@@ -35,6 +35,7 @@ class Observation:
     enabled: Optional[bool]
     restore_allowed: Optional[bool]
     replica_role: str
+    file_captured_at: Optional[datetime] = None
 
     def matches(self, person: ResolvedIdentity) -> bool:
         if person.user_id and person.user_id in self.user_ids:
@@ -110,32 +111,69 @@ class EvidenceStore:
             rel = meta.get("file_path") or ""
             path = self.dataset_dir / rel
             for raw in parse_evidence_file(path, file_id, captured):
-                self.observations.append(_from_dict(raw))
+                obs = _from_dict(raw)
+                obs.file_captured_at = captured
+                self.observations.append(obs)
+
+    def _file_time(self, obs: Observation) -> Optional[datetime]:
+        """When the evidence file was captured — that is the audit clock.
+
+        Nested snapshot timestamps say when a row was true inside a later
+        export; they must not leak a Sep-17 file into a Sep-15 audit.
+        """
+        return obs.file_captured_at or obs.captured_at
+
+    def linked_keys(self, person: ResolvedIdentity) -> set[tuple[str, str]]:
+        """Resource keys that ever carried this person's identifiers.
+
+        Ownership is stable (an account_id does not jump to someone else),
+        so a later file may teach us the id even when the at-audit snapshot
+        is a bare 404.
+        """
+        linked: set[tuple[str, str]] = set()
+        for obs in self.observations:
+            if obs.matches(person):
+                linked.add((obs.system_id, obs.resource_id))
+        return linked
+
+    def latest_any_time(self, person: ResolvedIdentity) -> dict[tuple[str, str], Observation]:
+        """Newest observation of each linked resource, ignoring audit_at."""
+        linked = self.linked_keys(person)
+        best: dict[tuple[str, str], Observation] = {}
+        for obs in self.observations:
+            key = (obs.system_id, obs.resource_id)
+            if key not in linked:
+                continue
+            previous = best.get(key)
+            if previous is None:
+                best[key] = obs
+                continue
+            prev_ts = previous.file_captured_at or previous.captured_at or previous.observed_at
+            new_ts = obs.file_captured_at or obs.captured_at or obs.observed_at
+            if prev_ts is None or (new_ts is not None and new_ts >= prev_ts):
+                best[key] = obs
+        return best
 
     def for_person(self, person: ResolvedIdentity, audit_at: datetime | None) -> list[Observation]:
-        """Everything we can prove belongs to this person at or before audit_at.
+        """State of this person's resources at or before audit_at.
 
-        Pass 1: match on email / user_id / hash / phone.
-        Pass 2: keep later snapshots of the SAME resource even if identifiers
-        were already stripped (anonymized analytics, redacted tickets).
+        Pass 1: match identifiers in ANY file (ownership).
+        Pass 2: keep at-audit snapshots of those resources even if the
+        identifiers were already stripped (anonymized analytics, 404s).
         """
+        linked = self.linked_keys(person)
+
         def allowed(obs: Observation) -> bool:
-            if audit_at and obs.captured_at and obs.captured_at > audit_at:
+            cap = self._file_time(obs)
+            if audit_at and cap and cap > audit_at:
                 return False
             return True
 
-        linked: set[tuple[str, str]] = set()
         hits: list[Observation] = []
         for obs in self.observations:
             if not allowed(obs):
                 continue
-            if obs.matches(person):
-                linked.add((obs.system_id, obs.resource_id))
-                hits.append(obs)
-        for obs in self.observations:
-            if not allowed(obs):
-                continue
-            if (obs.system_id, obs.resource_id) in linked and obs not in hits:
+            if (obs.system_id, obs.resource_id) in linked:
                 hits.append(obs)
         hits.sort(key=lambda item: (item.system_id, item.resource_id, item.file_id))
         return hits

@@ -20,10 +20,10 @@ HASH_RE = re.compile(r"\b[a-f0-9]{64}\b")
 def normalize_email(value: str | None) -> str | None:
     if not value:
         return None
-    email = value.strip().strip("\"'").lower()
-    if not email or "@" not in email:
+    match = EMAIL_RE.search(str(value).strip().strip("\"'"))
+    if not match:
         return None
-    return email
+    return match.group(0).lower()
 
 
 def normalize_phone(value: str | None) -> str | None:

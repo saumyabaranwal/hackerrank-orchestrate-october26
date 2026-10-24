@@ -159,7 +159,7 @@ def plan_requests(dataset_dir: Path, requests_csv: Path, case_id: str | None = N
     for row in selected:
         deletion = is_deletion_request(row.get("request_text") or "")
         person = index.resolve(row.get("email") or "")
-        status, steps = plan_case(row, person, deletion, store, rules, dataset_dir)
+        status, steps = plan_case(row, person, deletion, store, rules, dataset_dir, index)
         lines.append("=" * 88)
         lines.append(f"{row['case_id']}  {status}  steps={len(steps)}")
         for step in steps:
@@ -195,7 +195,7 @@ def score_sample(dataset_dir: Path) -> str:
     for row in rows:
         deletion = is_deletion_request(row.get("request_text") or "")
         person = index.resolve(row.get("email") or "")
-        status, steps = plan_case(row, person, deletion, store, rules, dataset_dir)
+        status, steps = plan_case(row, person, deletion, store, rules, dataset_dir, index)
         expected = gold[row["case_id"]]
         expected_status = expected["deletion_status"]
         expected_steps = json.loads(expected["steps_json"])
