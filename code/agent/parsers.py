@@ -13,7 +13,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
 
-from .identity import HASH_RE, USER_RE, normalize_email, normalize_hash, normalize_phone
+from .identity import EMAIL_RE, HASH_RE, USER_RE, normalize_email, normalize_hash, normalize_phone
 
 ISO_RE = re.compile(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z")
 RESOURCE_RE = re.compile(
@@ -174,7 +174,7 @@ def collect_ids(obj: Any) -> tuple[set[str], set[str], set[str], set[str]]:
                     continue
                 text = str(value)
                 lowered = key.lower()
-                if "email_hash" in lowered or key in {"correlation_key"}:
+                if "email_hash" in lowered:
                     digest = normalize_hash(text)
                     if digest:
                         hashes.add(digest)
@@ -185,10 +185,17 @@ def collect_ids(obj: Any) -> tuple[set[str], set[str], set[str], set[str]]:
                     "owner_key",
                     "subject_selector",
                     "subject_reference",
+                    "scan_key",
+                    "matched_value",
+                    "correlation_key",
                 }:
                     email = normalize_email(text)
                     if email:
                         emails.add(email)
+                    elif key == "correlation_key":
+                        digest = normalize_hash(text)
+                        if digest:
+                            hashes.add(digest)
                 if key in {
                     "user_id",
                     "customer_reference",
@@ -241,6 +248,9 @@ def observation(
     replica_role: str = "unknown",
 ) -> dict[str, Any]:
     emails, users, phones, hashes = collect_ids(ident_obj)
+    official = system_for(resource_id)
+    if official in PREFIX_SYSTEM.values():
+        system_id = official
     return {
         "file_id": file_id,
         "captured_at": captured_at,
@@ -614,6 +624,22 @@ def parse_handover_txt(path: Path, file_id: str, captured_at: Optional[datetime]
     return out
 
 
+def _unquote(value: str) -> str:
+    value = value.strip()
+    if len(value) >= 2 and value[0] == '"' and value[-1] == '"':
+        value = value[1:-1]
+    return value.replace('\\"', '"').replace("\\\\", "\\")
+
+
+def _absorb_kv_blob(data: dict[str, str], blob: str) -> None:
+    """Parse key=value pairs out of a nested message= body."""
+    blob = blob.replace('\\"', '"')
+    for key, value in KV_RE.findall(blob):
+        if key == "message":
+            continue
+        data.setdefault(key, _unquote(value))
+
+
 def parse_kv_line(line: str) -> dict[str, str]:
     data: dict[str, str] = {}
     match = ISO_RE.search(line)
@@ -631,9 +657,10 @@ def parse_kv_line(line: str) -> dict[str, str]:
         except json.JSONDecodeError:
             pass
     for key, value in KV_RE.findall(line):
-        if value.startswith('"') and value.endswith('"'):
-            value = value[1:-1]
-        data[key] = value
+        data[key] = _unquote(value)
+    nested = data.get("message")
+    if nested:
+        _absorb_kv_blob(data, nested)
     if "|" in line and "service" not in data:
         parts = [part.strip() for part in line.split("|")]
         if len(parts) >= 5 and ISO_RE.search(parts[0] or ""):
@@ -643,9 +670,24 @@ def parse_kv_line(line: str) -> dict[str, str]:
             data.setdefault("event", parts[4].split()[0] if parts[4] else "")
             rest = "|".join(parts[5:]) if len(parts) > 5 else ""
             for key, value in KV_RE.findall(rest):
-                if value.startswith('"') and value.endswith('"'):
-                    value = value[1:-1]
-                data[key] = value
+                data.setdefault(key, _unquote(value))
+    if not data.get("trace_id"):
+        trace = data.get("requestId") or data.get("trace") or ""
+        if not trace:
+            found = re.search(r"\btr-\d+\b", line)
+            trace = found.group(0) if found else ""
+        if trace:
+            data["trace_id"] = trace
+    if not data.get("service"):
+        func = data.get("function") or ""
+        if func:
+            data["service"] = func
+        else:
+            for token in line.split():
+                token = token.strip("<>,\"'")
+                if token in SERVICE_ALIASES or token in PREFIX_SYSTEM.values():
+                    data["service"] = token
+                    break
     return data
 
 
@@ -669,6 +711,7 @@ def parse_logs(path: Path, file_id: str, captured_at: Optional[datetime]) -> lis
                 "lookup_key", "match_key", "subject_key", "subject_ref",
                 "correlation_key", "owner_key", "customer_email",
                 "customer_reference", "subject_reference", "email", "requester_email",
+                "scan_key", "matched_value",
             ):
                 if item.get(key):
                     merged[key] = item[key]
@@ -677,7 +720,10 @@ def parse_logs(path: Path, file_id: str, captured_at: Optional[datetime]) -> lis
             if not rid or not RESOURCE_RE.search(rid):
                 continue
             event = (item.get("event") or "").lower()
-            service = SERVICE_ALIASES.get(item.get("service") or "", item.get("service")) or system_for(rid)
+            # system= is the store that holds the record. service=/function=
+            # is the component that *looked it up* and must not become system_id.
+            raw_system = item.get("system") or item.get("system_id") or ""
+            service = SERVICE_ALIASES.get(raw_system) or system_for(rid)
             ts = parse_ts(item.get("timestamp")) or captured_at
             cat = category_for(rid)
             present = pii = enabled = restore = None
@@ -710,6 +756,12 @@ def parse_logs(path: Path, file_id: str, captured_at: Optional[datetime]) -> lis
                 present, cat = (result != "miss"), "SEARCH_INDEX_ENTRY"
             if event in {"message_pii_scan", "attachment_pii_scan", "analytics_identity_scan"}:
                 present, pii = True, True
+                if event == "attachment_pii_scan":
+                    cat = "SUPPORT_ATTACHMENT"
+                elif event == "analytics_identity_scan":
+                    cat = "ANALYTICS_PROFILE"
+                elif event == "message_pii_scan":
+                    cat = "SUPPORT_MESSAGE"
             if event in {"contact_query_completed", "contact_lookup_completed"}:
                 try:
                     present = int(item.get("rows") or "1") > 0
@@ -757,7 +809,8 @@ def parse_logs(path: Path, file_id: str, captured_at: Optional[datetime]) -> lis
 
     for group in by_trace.values():
         emit(group)
-    emit(ungrouped)
+    for item in ungrouped:
+        emit([item])
     return out
 
 
@@ -799,6 +852,154 @@ def parse_pdf(path: Path, file_id: str, captured_at: Optional[datetime]) -> list
     return out
 
 
+_LINK_ALIASES: dict[str, str] | None = None
+_OCR_ENGINE = None
+
+
+def _dataset_root(path: Path) -> Path | None:
+    for parent in [path] + list(path.parents):
+        if (parent / "system_activity.csv").exists():
+            return parent
+    return None
+
+
+def _link_aliases(path_hint: Path) -> dict[str, str]:
+    """alias/filename -> resource_id from LINK_RESOURCE_IDENTITY details."""
+    global _LINK_ALIASES
+    if _LINK_ALIASES is not None:
+        return _LINK_ALIASES
+    aliases: dict[str, str] = {}
+    root = _dataset_root(path_hint)
+    if root is not None:
+        import csv as _csv
+        with (root / "system_activity.csv").open(newline="", encoding="utf-8") as handle:
+            for row in _csv.DictReader(handle):
+                if row.get("event_type") != "LINK_RESOURCE_IDENTITY":
+                    continue
+                rid = (row.get("resource_id") or "").strip()
+                if not rid:
+                    continue
+                aliases[rid.lower()] = rid
+                details = row.get("details") or ""
+                match = re.search(r"\(([^)]+)\)", details)
+                if match:
+                    aliases[match.group(1).strip().lower()] = rid
+    _LINK_ALIASES = aliases
+    return aliases
+
+
+_OCR_CACHE_PATH = Path(__file__).resolve().parent / "png_ocr_cache.json"
+_OCR_CACHE: dict[str, str] | None = None
+
+
+def _load_ocr_cache() -> dict[str, str]:
+    global _OCR_CACHE
+    if _OCR_CACHE is not None:
+        return _OCR_CACHE
+    if _OCR_CACHE_PATH.exists():
+        _OCR_CACHE = json.loads(_OCR_CACHE_PATH.read_text(encoding="utf-8"))
+    else:
+        _OCR_CACHE = {}
+    return _OCR_CACHE
+
+
+def _ocr_png_text(path: Path) -> str:
+    global _OCR_ENGINE
+    cache = _load_ocr_cache()
+    cached = cache.get(path.name)
+    if cached:
+        return cached
+    try:
+        from rapidocr_onnxruntime import RapidOCR
+    except ImportError:
+        return ""
+    if _OCR_ENGINE is None:
+        _OCR_ENGINE = RapidOCR()
+    result, _elapsed = _OCR_ENGINE(str(path))
+    if not result:
+        return ""
+    parts: list[str] = []
+    for item in result:
+        if isinstance(item, (list, tuple)) and len(item) >= 2:
+            parts.append(str(item[1]))
+    text = "\n".join(parts)
+    cache[path.name] = text
+    _OCR_CACHE_PATH.write_text(json.dumps(cache, ensure_ascii=False, indent=0), encoding="utf-8")
+    return text
+
+
+def parse_png(path: Path, file_id: str, captured_at: Optional[datetime]) -> list[dict]:
+    """Screenshot consoles are direct evidence (Q&A: a *link* is not; the pixels are)."""
+    text = _ocr_png_text(path)
+    if not text:
+        return []
+    lowered = text.lower()
+    aliases = _link_aliases(path)
+    spans: list[tuple[int, str]] = []
+    for match in RESOURCE_RE.finditer(text):
+        spans.append((match.start(), match.group(0)))
+    for alias, rid in aliases.items():
+        idx = lowered.find(alias.lower())
+        if idx >= 0:
+            spans.append((idx, rid))
+    email_spans = [(m.start(), m.group(0)) for m in EMAIL_RE.finditer(text)]
+    user_spans = [(m.start(), m.group(0).lower()) for m in USER_RE.finditer(text)]
+
+    seen: set[str] = set()
+    out: list[dict] = []
+    present_default = True
+    linked_ids = {rid.lower() for rid in aliases.values()}
+
+    for pos, rid in sorted(spans):
+        if rid in seen:
+            continue
+        if not re.search(r"_\d+[A-Za-z0-9]*$", rid):
+            continue
+        seen.add(rid)
+        ident: dict[str, str] = {}
+        if email_spans:
+            nearest = min(email_spans, key=lambda item: abs(item[0] - pos))
+            if abs(nearest[0] - pos) <= 100:
+                email = nearest[1]
+                email = re.sub(
+                    r"^(?:account|search|analytics|support|export|backup|data_flow|"
+                    r"audit_record|tombstone|marketing|object)_[0-9A-Za-z]+[\-·.]*",
+                    "",
+                    email,
+                    flags=re.I,
+                )
+                if "@" in email:
+                    ident["email"] = email
+        if user_spans:
+            nearest_u = min(user_spans, key=lambda item: abs(item[0] - pos))
+            if abs(nearest_u[0] - pos) <= 80:
+                ident["user_id"] = nearest_u[1]
+        # Screenshots list many customers. Only emit ids the data catalog
+        # linked; other rows are neighbours on the same console.
+        if rid.lower() not in linked_ids:
+            continue
+        cat = category_for(rid)
+        sys_id = system_for(rid)
+        pii = bool(ident.get("email")) and cat in {
+            "SUPPORT_MESSAGE", "SUPPORT_ATTACHMENT", "ANALYTICS_PROFILE",
+            "MARKETING_PROFILE", "EMAIL_DELIVERY_LOG",
+        }
+        enabled = None
+        restore = None
+        if cat == "DATA_FLOW":
+            enabled = True
+        # Archive listed on a console is not restore-allowed. Permission needs
+        # an explicit flag in a file captured before audit_at.
+        out.append(
+            observation(
+                file_id, captured_at, sys_id, rid, cat, ident_obj=ident or None,
+                observed_at=captured_at, present=present_default, pii_exposed=pii,
+                enabled=enabled, restore_allowed=restore,
+            )
+        )
+    return out
+
+
 def parse_evidence_file(path: Path, file_id: str, captured_at: Optional[datetime]) -> list[dict]:
     suffix = path.suffix.lower()
     name = path.name.lower()
@@ -819,6 +1020,8 @@ def parse_evidence_file(path: Path, file_id: str, captured_at: Optional[datetime
             return parse_logs(path, file_id, captured_at)
         if suffix == ".pdf":
             return parse_pdf(path, file_id, captured_at)
+        if suffix == ".png":
+            return parse_png(path, file_id, captured_at)
     except Exception:
         return []
     return []

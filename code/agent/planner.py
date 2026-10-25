@@ -16,7 +16,7 @@ from typing import Optional
 
 from .classify import is_deletion_request
 from .evidence import EvidenceStore, Observation
-from .identity import IdentityIndex, ResolvedIdentity
+from .identity import EMAIL_RE, USER_RE, IdentityIndex, ResolvedIdentity
 from .parsers import parse_ts
 from .policy import (
     FINDING_OPS,
@@ -108,6 +108,45 @@ def _ownership_map(store: EvidenceStore, index: IdentityIndex) -> dict[str, set[
             continue
         owned.setdefault(obs.resource_id, set()).update(uids)
     return owned
+
+
+def _catalog_links(dataset_dir: Path, index: IdentityIndex) -> dict[str, set[str]]:
+    """Explicit data-catalog ownership. Not a timing guess."""
+    owned, _times = _catalog_link_tables(dataset_dir, index)
+    return owned
+
+
+def _catalog_link_tables(
+    dataset_dir: Path, index: IdentityIndex
+) -> tuple[dict[str, set[str]], dict[str, datetime]]:
+    path = dataset_dir / "system_activity.csv"
+    owned: dict[str, set[str]] = {}
+    times: dict[str, datetime] = {}
+    if not path.exists():
+        return owned, times
+    with path.open(newline="", encoding="utf-8") as handle:
+        for row in csv.DictReader(handle):
+            if row.get("event_type") != "LINK_RESOURCE_IDENTITY":
+                continue
+            rid = row.get("resource_id") or ""
+            if not rid:
+                continue
+            when = parse_ts(row.get("event_time"))
+            if when is not None:
+                times[rid] = when
+            uids: set[str] = set()
+            details = row.get("details") or ""
+            for email in EMAIL_RE.findall(details):
+                uid = index.email_to_user.get(email.lower())
+                if uid:
+                    uids.add(uid)
+            for match in USER_RE.findall(details):
+                uid = match.lower()
+                if uid in index.by_user_id:
+                    uids.add(uid)
+            if uids:
+                owned.setdefault(rid, set()).update(uids)
+    return owned, times
 
 
 def _keep_one_account(
@@ -209,13 +248,97 @@ def _all_request_rows(dataset_dir: Path) -> list[dict]:
     return rows
 
 
+_LINKS_BY_DIR: dict[Path, tuple[dict[str, set[str]], dict[str, datetime]]] = {}
+
+
+def _link_tables(dataset_dir: Path, index: IdentityIndex) -> tuple[dict[str, set[str]], dict[str, datetime]]:
+    cached = _LINKS_BY_DIR.get(dataset_dir)
+    if cached is not None:
+        return cached
+    tables = _catalog_link_tables(dataset_dir, index)
+    _LINKS_BY_DIR[dataset_dir] = tables
+    return tables
+
+
+def _links_for(dataset_dir: Path, index: IdentityIndex) -> dict[str, set[str]]:
+    owned, _times = _link_tables(dataset_dir, index)
+    return owned
+
+
+def _in_request_window(ts, requested_at, audit_at) -> bool:
+    """Inclusive [requested_at, audit_at]. Missing timestamps fail closed."""
+    if ts is None:
+        return False
+    if requested_at is not None and ts < requested_at:
+        return False
+    if audit_at is not None and ts > audit_at:
+        return False
+    return True
+
+
+def _is_png(store: EvidenceStore, file_id: str) -> bool:
+    meta = store.manifest.get(file_id) or {}
+    return str(meta.get("file_path") or "").lower().endswith(".png")
+
+
+def _hits_including_catalog(
+    person: ResolvedIdentity,
+    store: EvidenceStore,
+    audit_at,
+    dataset_dir: Path | None,
+    index: IdentityIndex | None,
+    requested_at=None,
+) -> list[Observation]:
+    hits = list(store.for_person(person, audit_at))
+    filtered: list[Observation] = []
+    for obs in hits:
+        if _is_png(store, obs.file_id):
+            cap = obs.file_captured_at or obs.captured_at
+            if not _in_request_window(cap, requested_at, audit_at):
+                continue
+        filtered.append(obs)
+    hits = filtered
+    if dataset_dir is None or index is None:
+        return hits
+    owned_map, link_times = _link_tables(dataset_dir, index)
+    owned = {rid for rid, uids in owned_map.items() if person.user_id in uids}
+    if not owned:
+        return hits
+    seen = {(obs.system_id, obs.resource_id, obs.file_id) for obs in hits}
+
+    def _cap(obs: Observation):
+        return obs.file_captured_at or obs.captured_at
+
+    for obs in store.observations:
+        if obs.resource_id not in owned:
+            continue
+        cap = _cap(obs)
+        if audit_at and cap and cap > audit_at:
+            continue
+        link_ok = _in_request_window(link_times.get(obs.resource_id), requested_at, audit_at)
+        shot_ok = _is_png(store, obs.file_id) and _in_request_window(cap, requested_at, audit_at)
+        if not (link_ok or shot_ok):
+            continue
+        key = (obs.system_id, obs.resource_id, obs.file_id)
+        if key in seen:
+            continue
+        seen.add(key)
+        hits.append(obs)
+    return hits
+
+
 def _evidence_states(
     row: dict,
     person: ResolvedIdentity,
     store: EvidenceStore,
+    dataset_dir: Path | None = None,
+    index: IdentityIndex | None = None,
 ) -> dict[tuple[str, str], ResourceState]:
     audit_at = parse_ts(row.get("audit_at"))
-    hits = store.for_person(person, audit_at)
+    requested_at = parse_ts(row.get("requested_at"))
+    hits = _hits_including_catalog(
+        person, store, audit_at, dataset_dir, index, requested_at=requested_at
+    )
     states = _latest_states(hits)
     _synthesize_owned_missing(person, states, store, audit_at)
     _keep_one_account(states, store, person, hits)
@@ -287,7 +410,7 @@ def _build_activity_claims(
         person = index.resolve(row.get("email") or "")
         if person is None:
             continue
-        states = _evidence_states(row, person, store)
+        states = _evidence_states(row, person, store, dataset_dir, index)
         meta = {
             "case_id": row["case_id"],
             "user_id": person.user_id,
@@ -479,6 +602,8 @@ def _claims_for(
     owned = _OWNED_BY_STORE.get(id(store))
     if owned is None:
         owned = _ownership_map(store, index)
+        for rid, uids in _links_for(dataset_dir, index).items():
+            owned.setdefault(rid, set()).update(uids)
         _OWNED_BY_STORE[id(store)] = owned
     claims = _build_activity_claims(dataset_dir, store, index, activities, owned)
     _CLAIMS_BY_STORE[id(store)] = claims
@@ -499,7 +624,10 @@ def plan_case(
     if person is None:
         return "INCOMPLETE", []
     audit_at = parse_ts(row.get("audit_at"))
-    hits = store.for_person(person, audit_at)
+    requested_at = parse_ts(row.get("requested_at"))
+    hits = _hits_including_catalog(
+        person, store, audit_at, dataset_dir, index, requested_at=requested_at
+    )
     states = _latest_states(hits)
     _synthesize_owned_missing(person, states, store, audit_at)
     _keep_one_account(states, store, person, hits)
