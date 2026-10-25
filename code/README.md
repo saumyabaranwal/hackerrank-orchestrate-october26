@@ -108,7 +108,7 @@ python3 code/main.py
 sha256sum output.csv        # hashes should be identical
 ```
 
-Same input, same hash. There is no randomness, no model, and no network.
+Same input, same hash. With `llm_cache.json` and `png_ocr_cache.json` in the zip there is no live Gemini call and no OCR re-run; the planner is deterministic Python.
 
 ### Sanity checks on the output
 
