@@ -1,37 +1,36 @@
-# Ghost Data Still Exists: deletion-audit agent
+# Ghost Data Still Exists
 
-A deterministic, evidence-first agent that audits whether a person's data was
-really erased. It does **not** trust dashboards or the deletion worker's
-`SUCCESS` / `FAILED` flags. For each request it decides:
+## Deletion audit agent
 
-1. Was deletion actually requested?
-2. Who is this person (including old emails, phones and hashes)?
-3. What evidence still shows at `audit_at`?
-4. What does `deletion_rules.csv` require for each leftover?
-5. What is the official ordered step list?
+This project audits whether a customer's data was actually deleted. It uses participant-provided identity, policy, activity, and evidence files. It does not treat a workflow status such as `SUCCESS` or `COMPLETE` as proof.
 
-No LLM is in the decision loop, so there are no prompts to tune, no API keys,
-no network calls, and a rerun produces the same `output.csv`.
+For each request, the pipeline:
 
-**At a glance**
+1. Checks whether the request authorizes deletion.
+2. Resolves the person from current and historical identifiers.
+3. Finds evidence available by the case's `audit_at` cutoff.
+4. Applies the action in `deletion_rules.csv`.
+5. Writes the required findings, remediation, and verification steps.
 
-| | |
+The solution is deterministic Python. It makes no hosted model calls and requires no API keys. RapidOCR reads screenshot text locally; parsed text is cached.
+
+## At a glance
+
+| Item | Details |
 |---|---|
-| Input | `dataset/deletion_requests.csv` (518 cases, `case_33`-`case_550`) |
-| Output | `output.csv` at repo root: `case_id,deletion_status,steps_json` |
-| Dependencies | Python stdlib + `pypdf` |
-| Model / token cost | None / 0 tokens / $0 |
-| Runtime | about 10 s with OCR cache; about 1 min if RapidOCR must re-read the 11 PNGs |
-| Public sample | 32/32 status correct, 0 extra steps (see `evaluation/evaluation_report.md`) |
+| Input | `dataset/deletion_requests.csv` — 518 requests, `case_33` through `case_550` |
+| Output | Repository-root `output.csv` with `case_id,deletion_status,steps_json` |
+| Runtime dependencies | Python 3.10+, `pypdf>=4.0.0`, `rapidocr-onnxruntime==1.2.3` |
+| Hosted model usage | None; 0 tokens; $0 estimated cost |
+| Typical runtime | About 10 seconds with OCR cache; about 1 minute for a cold OCR run |
+| Public sample | 32/32 status matches; 18/32 exact step structures; 0 extra steps |
+| Full dataset run | 154 COMPLETE, 354 INCOMPLETE, 10 NOT_APPLICABLE; 3,245 observations |
 
----
+## 1. Run the solution
 
-## 1. Quick start
+Run commands from the repository root—the directory containing `dataset/` and `code/`.
 
-Run everything from the **repository root** (the folder containing `dataset/`
-and `code/`).
-
-```text
+```bash
 # macOS / Linux
 python3 -m pip install -r code/requirements.txt
 python3 code/main.py
@@ -41,164 +40,127 @@ python -m pip install -r code/requirements.txt
 python code/main.py
 ```
 
-Requirements: Python 3.10+. The only third-party package is `pypdf` (PDF text
-extraction). No `.env`, no API key.
-
-`code.zip` does **not** include `dataset/`. Put the unzipped tree in the
-challenge repo as `code/`, so `dataset/` sits next to `code/`. The agent
-auto-detects that layout. If you unzip somewhere else:
-
-```text
-python3 main.py --dataset /path/to/dataset --out /path/to/output.csv
-```
-
-`--dataset` is the folder that contains `deletion_requests.csv`. `--out` is the
-output CSV path (default: repository root `output.csv`).
-
-### Expected result
-
-The run prints a one-line summary and writes `output.csv`:
+The run writes `output.csv` to the repository root. Expected summary:
 
 ```text
 rows=518  COMPLETE=154  INCOMPLETE=354  NOT_APPLICABLE=10  obs=3245
 ```
 
-If your numbers differ, see [Troubleshooting](#6-troubleshooting).
+To select input and output paths explicitly:
 
----
+```bash
+python3 code/main.py --dataset /path/to/dataset --out /path/to/output.csv
+```
 
-## 2. Commands
+`--dataset` must point to the directory containing `deletion_requests.csv`. `code.zip` should contain the code tree, not the challenge dataset.
 
-| Command | What it does |
+## 2. Useful commands
+
+| Command | Purpose |
 |---|---|
-| `python3 code/main.py` | Full run, writes `output.csv` (same as `--run`) |
-| `python3 code/main.py --run` | Same as above |
-| `python3 code/main.py --dataset PATH --out PATH` | Full run with explicit dataset and output paths |
-| `python3 code/main.py --skeleton` | Classifier + identity only (no evidence/planning) |
-| `python3 code/main.py --evidence case_05` | Show matched evidence for one case (Brain 3) |
-| `python3 code/main.py --plan case_05` | Show the full step list for one case (Brain 5) |
-| `python3 code/main.py --score-sample` | Score against the 32-case public sample |
-| `python3 code/evaluation/main.py` | Public-sample scoring plus the three team test cases |
+| `python3 code/main.py` | Run the full pipeline |
+| `python3 code/main.py --run` | Same as the full run |
+| `python3 code/main.py --skeleton` | Classify requests and resolve identities without evidence planning |
+| `python3 code/main.py --evidence case_05` | Show evidence matched to a case |
+| `python3 code/main.py --plan case_05` | Show the planned steps for a case |
+| `python3 code/main.py --score-sample` | Compare predictions with the 32-case public sample |
+| `python3 code/evaluation/main.py` | Run public-sample scoring and team checks TC1–TC6 |
 
-`--evidence` is the filing cabinet: what we can prove about this person.
-`--plan` is the final answer, including accounts attached from *uniquely
-closest* activity when evidence never printed the id.
+### Check deterministic output
 
-### Verify a clean rerun
+```bash
+python3 code/main.py
+sha256sum output.csv       # macOS / Linux
+python3 code/main.py
+sha256sum output.csv
+```
+
+The hashes should match when the input data and OCR cache are unchanged. On Windows, use `Get-FileHash output.csv -Algorithm SHA256` between runs.
+
+### Output checks
+
+- There are 518 unique rows, in the same order as `deletion_requests.csv`.
+- Every `steps_json` value is valid JSON.
+- `NOT_APPLICABLE` cases use `[]`; in this dataset those are `case_533` through `case_542`.
+- `COMPLETE` rows contain only evidence-cited verification steps.
+- `INCOMPLETE` rows contain findings, then proposed remediation, then future verification.
+- The current output has no empty `COMPLETE` plans.
+
+## 3. How the pipeline works
 
 ```text
-rm -f output.csv
-python3 code/main.py
-sha256sum output.csv        # macOS: shasum -a 256 output.csv
-python3 code/main.py
-sha256sum output.csv        # hashes should be identical
+Request
+  ├─ Classification: deletion request or NOT_APPLICABLE
+  ├─ Identity: current and historical email, phone, and hash
+  ├─ Evidence: parse files and select facts available by audit_at
+  ├─ Policy: apply deletion_rules.csv
+  └─ Planning: order findings, remediation, and verification
 ```
 
-Same input, same hash. There is no randomness, no model, and no network.
-
-### Sanity checks on the output
-
-- 518 rows, unique `case_id`, numeric order `case_33` ... `case_550`.
-- `steps_json` parses as JSON on every row.
-- `NOT_APPLICABLE` rows have `[]` (expected ids: `case_533`-`case_542`).
-- `COMPLETE` rows contain only `VERIFICATION` steps, each with a non-empty `evidence_id`.
-- `INCOMPLETE` rows run FINDING, then REMEDIATION, then VERIFICATION.
-
----
-
-## 3. Architecture
-
-```text
-request row
-    |
-    +- Brain 1  classify   deletion requested?  else NOT_APPLICABLE []
-    +- Brain 2  identity   current + historical email / phone / hash
-    +- Brain 3  evidence   parse 94 files -> observations; match person at audit_at
-    +- Brain 4  policy     deletion_rules.csv: DELETE | REDACT | ANONYMIZE | RETAIN
-    +- Brain 5  planner    COMPLETE   = cited verifications only
-                           INCOMPLETE = FINDING -> REMEDIATION -> VERIFICATION
-```
-
-`code/agent/pipeline.py` orchestrates the brains. It never invents policy.
-
-| Module | Job |
+| Module | Responsibility |
 |---|---|
-| `classify.py` | Phrase-list classifier; non-deletion markers are checked first |
-| `identity.py` | Identity index from `user_identities.csv` + `user_audit_log.csv` |
-| `parsers.py` | SQL / JSON / log / txt / PDF to one common Observation shape |
-| `evidence.py` | Evidence cabinet. Identity match on any file; **state** only from files captured at or before `audit_at` |
-| `policy.py` | Reads `deletion_rules.csv` (CSV wins over built-in fallback) |
-| `planner.py` | Builds the ordered step list; one profile per person; activity ids only if uniquely closer |
-| `pipeline.py` | Wires the brains together |
+| `classify.py` | Phrase-based request classification; non-deletion markers are checked first |
+| `identity.py` | Builds the identity index from current and historical records |
+| `parsers.py` | Extracts observations from SQL, JSON, logs, text, PDFs, and PNG screenshots |
+| `evidence.py` | Matches evidence to people and enforces the `audit_at` cutoff for state |
+| `policy.py` | Loads required actions from `deletion_rules.csv` |
+| `planner.py` | Creates and orders the final steps |
+| `pipeline.py` | Connects the stages and writes the output |
 
-### Output contract
+Every step has `step_no`, `phase`, `system_id`, `resource_id`, `operation`, `state`, and `evidence_id`. Steps sort by phase, the problem statement's operation order, `system_id`, then `resource_id`.
 
-Each `steps_json` item:
+## 4. Decision rules
 
-```json
-{"step_no": 1, "phase": "FINDING", "system_id": "account_service",
- "resource_id": "account_005", "operation": "REPORT_REMAINING_RECORD",
- "state": "PRESENT", "evidence_id": "evidence_54"}
-```
+- Workflow statuses and activity results are claims; evidence establishes record state.
+- State is based on files captured at or before `audit_at`. Later files may help identify ownership but cannot change the at-cutoff state.
+- If any replica is present at the cutoff, the record is treated as present.
+- Identifier matching uses exact or word-boundary matches (`user_21` does not match `user_210`).
+- An activity event is assigned only when it is within two hours of a request and at least ten minutes closer to that request than to any competing request. Ambiguous events are skipped.
+- Catalog links and screenshot findings attach only within the inclusive `[requested_at, audit_at]` window. Ordinary evidence may predate the request if it is the latest eligible snapshot before the audit cutoff.
+- A log's `system=` field identifies the data store. `service=` identifies a lookup component.
+- The planner keeps one `USER_PROFILE` per person, selecting the newest eligible profile.
+- A catalog link without a corresponding evidence file establishes ownership, not record state. The solution does not invent PRESENT or ABSENT for `export_1842`.
+- Archive presence alone does not establish whether restore access is allowed or blocked. Cases 39 and 55 are excluded from scoring by the organizers; the output avoids making unsupported restore claims for them.
 
-Order: phase (FINDING, REMEDIATION, VERIFICATION), then contest operation
-order, then `system_id`, then `resource_id`.
+### PII uncertainty
 
----
-
-## 4. Design rules (why it behaves this way)
-
-- **Claims are not evidence.** `reported_status` and activity `reported_result` never set state.
-- **Extra steps are worse than missing steps.** The planner prefers silence to guessing a neighbour's id.
-- **Audit-time truth.** State comes only from files captured at or before `audit_at`. Later files may teach *who owns* an id, never rewrite at-audit PII.
-- **Replica ghost.** If any copy at audit time is present, the record is present.
-- **Exact ids.** Word-boundary matching, so `user_21` never matches `user_210`.
-- **Unique activity assignment.** An activity id is attached only if this request is at least 10 minutes closer than every other request (sample + 518) and within 2 hours. Ties are skipped.
-- **Catalog / screenshot window.** A `LINK_RESOURCE_IDENTITY` id or PNG leftover attaches only if the link time or screenshot `captured_at` falls inside `[requested_at, audit_at]`. Other evidence may still pre-date `requested_at` if it is the latest before `audit_at`.
-- **Log `system=` vs `service=`.** `system=` is the store that holds the record. `service=` is the lookup component and is not `system_id`.
-- **One live profile per person.** If two `USER_PROFILE` ids appear, keep the newest at audit.
-- **Service aliases.** Replica hostnames map to official ids (`support_replica` to `support_platform`).
-- **Fail closed.** Non-deletion gives `NOT_APPLICABLE` with `[]`. Unknown person would give `INCOMPLETE` with `[]`; that path fires **0 times** on the 518 (every request email resolves).
-
----
+The planner now represents PII state as true, false, or unknown and avoids a redaction/anonymization verification when the state is unknown. The parser still infers “no recognized PII fields” as false in some formats. That means parser-level uncertainty is not fully preserved for every record shape; see the evaluation report's limitations.
 
 ## 5. Known limitations
 
-These are deliberate trade-offs, documented in `evaluation/evaluation_report.md`:
+- Request classification uses phrase lists and may miss unfamiliar wording. It fails closed to `NOT_APPLICABLE`.
+- Activity matching thresholds are precision gates tuned against the public sample, not derived constants.
+- Identifier-less 404s and null-identifier rows in multi-user dumps are not attributed to a person.
+- A person with two genuinely live profiles may be reduced to one profile by the current single-profile assumption.
+- Legal-hold handling is implemented as `RETAIN` plus `VERIFY_RECORD_PRESENT`, but no public sample exercises it.
+- A parser that fails to read a relevant record could cause the solution to miss that record.
 
-- The classifier is a phrase list. It is brittle on new wording by design.
-- The 10-minute / 2-hour activity thresholds are tuned precision gates, not derived constants.
-- Identifier-less 404s and null-field analytics rows in multi-user dumps are not attributed to anyone.
-- The 11 `.png` consoles are OCR'd locally (RapidOCR). A screenshot *hyperlink* is still not proof; pixels of the record are.
-- Identity lookup is email-first. A request with no email fails closed.
-- Legal holds are wired (RETAIN to `VERIFY_RECORD_PRESENT`) but the public sample has none, so that path is untested on real data.
-
----
+See `evaluation/evaluation_report.md` for measured public-sample results and documented gaps. See `evaluation/usage_report.md` for runtime, OCR, token, and cost details.
 
 ## 6. Troubleshooting
 
-| Symptom | Fix |
+| Symptom | What to check |
 |---|---|
-| `ModuleNotFoundError: pypdf` | Run `python3 -m pip install -r code/requirements.txt` |
-| `FileNotFoundError: dataset/...` | Run from the repository root, not from `code/`. Or pass `--dataset PATH` |
-| Row counts differ from expected | Confirm the dataset is unmodified and complete (94 evidence files, 518 requests) |
-| `output.csv` not found | It is written to the repository root, not `code/` |
-| Old Python | Use Python 3.10 or newer |
+| `ModuleNotFoundError: pypdf` | Install `code/requirements.txt` from the repository root |
+| `ModuleNotFoundError: rapidocr_onnxruntime` | Install requirements; the documented version is `1.2.3` |
+| Dataset file not found | Run from the repository root or pass `--dataset PATH` |
+| Output row count differs | Check that the dataset has 518 requests and 94 evidence files |
+| Summary says `obs=3243` | Check that `pypdf` installed correctly; the four PDFs should contribute parsed observations |
+| Output file not found | The default output is repository-root `output.csv` |
+| Windows archive contains an extra `code/` directory | Zip the contents of `code/`, not the `code/` directory itself |
 
----
-
-## 7. Layout
+## 7. Package layout
 
 ```text
 code/
   main.py
   requirements.txt
   README.md
-  agent/        classify, identity, parsers, evidence, policy, planner, pipeline
+  agent/        classification, identity, parsers, evidence, policy, planner, pipeline
   evaluation/
     main.py
     evaluation_report.md
     usage_report.md
 ```
 
-Do not put API keys in this tree. Do not ship `dataset/` inside `code.zip`.
+Include `agent/png_ocr_cache.json` in the code package so the evaluator can use cached screenshot text. Exclude `__pycache__` and do not include the dataset or secrets.

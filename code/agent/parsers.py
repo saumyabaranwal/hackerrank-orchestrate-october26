@@ -134,29 +134,86 @@ def truthy(value: Any) -> Optional[bool]:
     return None
 
 
-def pii_from_mapping(obj: Any) -> bool:
+_PII_KEYS = (
+    "email",
+    "owner_email",
+    "requester_email",
+    "customer_email",
+    "full_name",
+    "name",
+    "display_name",
+    "requester_name",
+    "phone",
+    "requester_phone",
+    "email_hash",
+)
+_PII_EMPTY = {"", "null", "none"}
+_PII_REDACTED = {"[redacted]", "redacted", "[anonymized]", "anonymized", "[anonymised]", "anonymised"}
+
+
+def pii_from_mapping(obj: Any) -> Optional[bool]:
+    """True = identifiers present, False = explicitly stripped, None = unknown.
+
+    Missing PII keys is not proof of redaction. Only return False when the
+    record has identifier fields that are empty/null/redacted, or an explicit
+    REDACTED / ANONYMIZED / pii=false signal.
+    """
     if not isinstance(obj, dict):
-        return False
-    for key in (
-        "email",
-        "owner_email",
-        "requester_email",
-        "customer_email",
-        "full_name",
-        "name",
-        "display_name",
-        "requester_name",
-        "phone",
-        "requester_phone",
-        "email_hash",
-    ):
+        return None
+
+    for key in ("result", "pii_status", "identity_status"):
+        text = str(obj.get(key) or "").strip().upper()
+        if text in {"IDENTIFIABLE", "PII_EXPOSED", "EXPOSED"}:
+            return True
+        if text in {"REDACTED", "ANONYMIZED", "ANONYMISED"}:
+            return False
+
+    for key in ("pii_exposed", "identifiable", "contains_pii"):
+        if key not in obj or obj.get(key) is None:
+            continue
+        flag = truthy(obj.get(key))
+        if flag is not None:
+            return flag
+
+    saw_identifier_field = False
+    for key in _PII_KEYS:
+        if key not in obj:
+            continue
+        saw_identifier_field = True
         value = obj.get(key)
         if value is None:
             continue
-        if str(value).strip().lower() in {"", "null", "none"}:
+        text = str(value).strip()
+        if not text or text.lower() in _PII_EMPTY or text.lower() in _PII_REDACTED:
             continue
         return True
-    return False
+
+    if saw_identifier_field:
+        return False
+    return None
+
+
+def _pii_any(*values: Optional[bool]) -> Optional[bool]:
+    """Combine PII flags: exposed wins, else explicit-clear, else unknown."""
+    if any(value is True for value in values):
+        return True
+    if any(value is False for value in values):
+        return False
+    return None
+
+
+def pii_from_message(text: Any) -> Optional[bool]:
+    """Support body: [REDACTED] is explicit-clear; an email is exposed; else unknown."""
+    if text is None:
+        return None
+    message = str(text).strip()
+    if not message:
+        return None
+    if message.lower() in _PII_REDACTED:
+        return False
+    if "@" in message:
+        return True
+    return None
 
 
 def collect_ids(obj: Any) -> tuple[set[str], set[str], set[str], set[str]]:
@@ -356,20 +413,18 @@ def parse_sql_file(path: Path, file_id: str, captured_at: Optional[datetime]) ->
                 cat = category_for(rid, collection=collection)
                 pii = pii_from_mapping(payload)
                 if isinstance(payload, dict) and isinstance(payload.get("document"), dict):
-                    pii = pii or pii_from_mapping(payload["document"])
+                    pii = _pii_any(pii, pii_from_mapping(payload["document"]))
                 enabled = restore = None
                 if isinstance(payload, dict):
                     if "enabled" in payload:
                         enabled = truthy(payload.get("enabled"))
                     if "restore_allowed" in payload:
                         restore = truthy(payload.get("restore_allowed"))
-                    if cat == "ANALYTICS_PROFILE":
-                        pii = bool(payload.get("user_id") or payload.get("email") or payload.get("phone") or payload.get("email_hash"))
-                    if cat == "ACCOUNT_TOMBSTONE":
-                        pii = bool(payload.get("name") or payload.get("email") or payload.get("phone") or payload.get("email_hash"))
                     if cat == "SUPPORT_MESSAGE":
-                        msg = str(payload.get("message_text") or "")
-                        pii = pii_from_mapping(payload) or ("@" in msg and "[REDACTED]" not in msg)
+                        pii = _pii_any(
+                            pii_from_mapping(payload),
+                            pii_from_message(payload.get("message_text") or payload.get("message_excerpt")),
+                        )
                 out.append(
                     observation(
                         file_id, cap, origin, rid, cat, ident_obj=payload if payload else row,
@@ -393,7 +448,7 @@ def parse_sql_file(path: Path, file_id: str, captured_at: Optional[datetime]) ->
     return out
 
 
-def _inventory_shape(table: str, rid: str, row: dict) -> tuple[str, str, Optional[bool], Optional[bool], bool]:
+def _inventory_shape(table: str, rid: str, row: dict) -> tuple[str, str, Optional[bool], Optional[bool], Optional[bool]]:
     name = table.lower()
     mapping = {
         "customer_profiles": ("USER_PROFILE", "account_service"),
@@ -408,10 +463,7 @@ def _inventory_shape(table: str, rid: str, row: dict) -> tuple[str, str, Optiona
     cat, sys_id = mapping.get(name, (category_for(rid), system_for(rid)))
     enabled = truthy(row.get("enabled")) if cat == "DATA_FLOW" else None
     restore = truthy(row.get("restore_allowed")) if cat == "BACKUP_ARCHIVE" else None
-    if cat == "ANALYTICS_PROFILE":
-        pii = bool(row.get("email") or row.get("customer_reference") or row.get("email_hash") or row.get("phone"))
-    else:
-        pii = pii_from_mapping(row)
+    pii = pii_from_mapping(row)
     return cat, sys_id, enabled, restore, pii
 
 
@@ -434,10 +486,6 @@ def parse_snapshot_bundle(path: Path, file_id: str, captured_at: Optional[dateti
             pii = pii_from_mapping(ident)
             enabled = truthy(rec.get("enabled")) if cat == "DATA_FLOW" else None
             restore = truthy(rec.get("restore_allowed")) if cat == "BACKUP_ARCHIVE" else None
-            if cat == "ANALYTICS_PROFILE":
-                pii = bool(rec.get("user_id") or rec.get("email") or rec.get("phone") or rec.get("email_hash"))
-            if cat == "ACCOUNT_TOMBSTONE":
-                pii = bool(rec.get("name") or rec.get("email") or rec.get("phone") or rec.get("email_hash"))
             out.append(
                 observation(
                     file_id, cap, store or system_for(rid), rid, cat, ident_obj=ident,
@@ -466,7 +514,7 @@ def parse_service_export(path: Path, file_id: str, captured_at: Optional[datetim
             observation(
                 file_id, exported, "account_service", rid, "USER_PROFILE", ident_obj=ident,
                 observed_at=parse_ts(rec.get("observed_at")) or exported,
-                present=present, pii_exposed=pii_from_mapping(profile) if isinstance(profile, dict) else False,
+                present=present, pii_exposed=pii_from_mapping(profile) if isinstance(profile, dict) else None,
             )
         )
 
@@ -474,7 +522,7 @@ def parse_service_export(path: Path, file_id: str, captured_at: Optional[datetim
         rid = rec.get("resource_id")
         if not rid:
             continue
-        pii = bool(rec.get("email") or rec.get("customer_reference") or rec.get("email_hash") or rec.get("phone"))
+        pii = pii_from_mapping(rec)
         out.append(
             observation(
                 file_id, exported, "analytics_platform", rid, "ANALYTICS_PROFILE", ident_obj=rec,
@@ -489,7 +537,7 @@ def parse_service_export(path: Path, file_id: str, captured_at: Optional[datetim
         out.append(
             observation(
                 file_id, exported, "backup_service", rid, "BACKUP_ARCHIVE", ident_obj=rec,
-                observed_at=parse_ts(rec.get("observed_at")) or exported, present=True, pii_exposed=False,
+                observed_at=parse_ts(rec.get("observed_at")) or exported, present=True, pii_exposed=None,
                 restore_allowed=truthy(rec.get("restore_allowed")),
             )
         )
@@ -512,7 +560,7 @@ def parse_service_export(path: Path, file_id: str, captured_at: Optional[datetim
         out.append(
             observation(
                 file_id, exported, "integration_service", rid, "DATA_FLOW", ident_obj=rec,
-                observed_at=parse_ts(rec.get("observed_at")) or exported, present=True, pii_exposed=False,
+                observed_at=parse_ts(rec.get("observed_at")) or exported, present=True, pii_exposed=None,
                 enabled=truthy(rec.get("enabled")),
             )
         )
@@ -524,12 +572,14 @@ def parse_service_export(path: Path, file_id: str, captured_at: Optional[datetim
         total = hits.get("total") if isinstance(hits, dict) else 0
         present = bool(docs) or (isinstance(total, int) and total > 0)
         ident = dict(rec)
-        pii = False
+        pii: Optional[bool] = None
         if docs:
             for doc in docs:
                 ident.update(doc)
-                pii = pii or pii_from_mapping(doc)
+                pii = _pii_any(pii, pii_from_mapping(doc))
                 rid = doc.get("resource_id") or rid
+        elif present is False:
+            pii = False
         obs = observation(
             file_id, exported, "search_service", rid, "SEARCH_INDEX_ENTRY", ident_obj=ident,
             observed_at=parse_ts(rec.get("observed_at")) or exported, present=present, pii_exposed=pii,
@@ -548,7 +598,7 @@ def parse_service_export(path: Path, file_id: str, captured_at: Optional[datetim
         out.append(
             observation(
                 file_id, exported, "security_service", rid, "SECURITY_AUDIT_LOG", ident_obj=rec,
-                observed_at=parse_ts(rec.get("observed_at")) or exported, present=True, pii_exposed=False,
+                observed_at=parse_ts(rec.get("observed_at")) or exported, present=True, pii_exposed=None,
             )
         )
 
@@ -559,7 +609,8 @@ def parse_service_export(path: Path, file_id: str, captured_at: Optional[datetim
         out.append(
             observation(
                 file_id, exported, "support_platform", rid, "SUPPORT_MESSAGE", ident_obj=rec,
-                observed_at=parse_ts(rec.get("observed_at")) or exported, present=True, pii_exposed=pii_from_mapping(rec),
+                observed_at=parse_ts(rec.get("observed_at")) or exported, present=True,
+                pii_exposed=pii_from_mapping(rec),
             )
         )
     return out
@@ -583,8 +634,6 @@ def parse_generic_json(path: Path, file_id: str, captured_at: Optional[datetime]
                 continue
             cat = category_for(rid, collection=data.get("collection"))
             pii = pii_from_mapping(rec)
-            if cat == "ANALYTICS_PROFILE":
-                pii = bool(rec.get("user_id") or rec.get("email") or rec.get("phone") or rec.get("email_hash"))
             out.append(
                 observation(
                     file_id, exported, system_for(rid), rid, cat, ident_obj=rec,
@@ -773,15 +822,15 @@ def parse_logs(path: Path, file_id: str, captured_at: Optional[datetime]) -> lis
                 elif item.get("email_opt_in"):
                     cat = "SECONDARY_IDENTIFIER"
             if event == "analytics_profile_read_completed":
-                pii = bool(item.get("email") and item.get("email") not in {"null", "None", ""})
+                pii = pii_from_mapping(item)
                 present, cat = True, "ANALYTICS_PROFILE"
             if event in {"support_ticket_read_completed", "message_read"}:
                 present, cat = True, "SUPPORT_MESSAGE"
-                pii = bool(item.get("requester_email") and item.get("requester_email") not in {"null", ""})
+                pii = pii_from_mapping(item)
                 if item.get("message_text") == "[REDACTED]":
-                    pii = False
+                    pii = False if pii is not True else True
             if event == "audit_record_read_completed":
-                present, pii, cat = True, False, "SECURITY_AUDIT_LOG"
+                present, pii, cat = True, None, "SECURITY_AUDIT_LOG"
             ident = dict(item)
             ident.update(merged)
             out.append(
@@ -845,7 +894,7 @@ def parse_pdf(path: Path, file_id: str, captured_at: Optional[datetime]) -> list
     if audit and ("Event reference" in text or "audit_record_" in text):
         obs = observation(
             file_id, captured_at, "security_service", audit.group(1), "SECURITY_AUDIT_LOG",
-            present=True, pii_exposed=False,
+            present=True, pii_exposed=None,
         )
         obs["user_ids"] |= users
         out.append(obs)
@@ -980,10 +1029,12 @@ def parse_png(path: Path, file_id: str, captured_at: Optional[datetime]) -> list
             continue
         cat = category_for(rid)
         sys_id = system_for(rid)
-        pii = bool(ident.get("email")) and cat in {
+        pii = None
+        if cat in {
             "SUPPORT_MESSAGE", "SUPPORT_ATTACHMENT", "ANALYTICS_PROFILE",
             "MARKETING_PROFILE", "EMAIL_DELIVERY_LOG",
-        }
+        }:
+            pii = True if ident.get("email") else None
         enabled = None
         restore = None
         if cat == "DATA_FLOW":

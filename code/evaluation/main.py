@@ -136,6 +136,69 @@ def team_case_no_stolen_accounts(dataset: Path) -> tuple[bool, str]:
     return True, "case_17/18 did not emit neighbour account ids"
 
 
+def team_case_output_order(dataset: Path) -> tuple[bool, str]:
+    """Row order of output.csv must match deletion_requests.csv."""
+    requests = [row["case_id"] for row in csv.DictReader((dataset / "deletion_requests.csv").open(newline="", encoding="utf-8"))]
+    out_path = ROOT / "output.csv"
+    if not out_path.exists():
+        return False, "output.csv missing"
+    produced = [row["case_id"] for row in csv.DictReader(out_path.open(newline="", encoding="utf-8"))]
+    if produced != requests:
+        return False, "output.csv order != deletion_requests.csv"
+    return True, f"{len(produced)} rows in request order"
+
+
+def team_case_audit_cutoff(dataset: Path) -> tuple[bool, str]:
+    """Cited evidence must not be captured after that case's audit_at."""
+    from agent.parsers import parse_ts
+
+    manifest = {
+        row["file_id"]: parse_ts(row.get("captured_at"))
+        for row in csv.DictReader((dataset / "evidence_files.csv").open(newline="", encoding="utf-8"))
+    }
+    requests = {
+        row["case_id"]: parse_ts(row.get("audit_at"))
+        for row in csv.DictReader((dataset / "deletion_requests.csv").open(newline="", encoding="utf-8"))
+    }
+    out_path = ROOT / "output.csv"
+    if not out_path.exists():
+        return False, "output.csv missing"
+    late = []
+    for row in csv.DictReader(out_path.open(newline="", encoding="utf-8")):
+        audit_at = requests.get(row["case_id"])
+        if audit_at is None:
+            continue
+        for step in json.loads(row["steps_json"]):
+            ev = step.get("evidence_id") or ""
+            if not ev or not ev.startswith("evidence_"):
+                continue
+            cap = manifest.get(ev)
+            if cap is not None and cap > audit_at:
+                late.append(f"{row['case_id']}:{ev}")
+    if late:
+        return False, "post-audit evidence " + ", ".join(late[:5])
+    return True, "no cited file_id is after audit_at"
+
+
+def team_case_backup_unknown_not_blocked(dataset: Path) -> tuple[bool, str]:
+    """case_55: archive on evidence_32 is not proof restore is blocked (excluded case)."""
+    index = IdentityIndex(dataset)
+    store = EvidenceStore(dataset)
+    rules = load_rules(dataset)
+    row = next(
+        r
+        for r in csv.DictReader((dataset / "deletion_requests.csv").open(newline="", encoding="utf-8"))
+        if r["case_id"] == "case_55"
+    )
+    deletion = is_deletion_request(row.get("request_text") or "")
+    person = index.resolve(row.get("email") or "")
+    _status, steps = plan_case(row, person, deletion, store, rules, dataset, index)
+    restore_ops = [s["operation"] for s in steps if "RESTORE" in s["operation"] or s.get("resource_id") == "backup_9287"]
+    if restore_ops:
+        return False, f"inferred restore state: {restore_ops}"
+    return True, "case_55 does not treat archive presence as restore blocked/allowed"
+
+
 def main() -> None:
     dataset = ROOT / "dataset"
     print("Public sample (32 cases vs sample_output.csv)")
@@ -151,6 +214,9 @@ def main() -> None:
         ("TC1 non-deletion classifier", team_case_non_deletion()),
         ("TC2 historical identity", team_case_historical_identity(dataset)),
         ("TC3 no stolen accounts", team_case_no_stolen_accounts(dataset)),
+        ("TC4 output row order", team_case_output_order(dataset)),
+        ("TC5 evidence cutoff", team_case_audit_cutoff(dataset)),
+        ("TC6 case_55 restore unknown", team_case_backup_unknown_not_blocked(dataset)),
     ]
     failed = 0
     for name, (ok, detail) in cases:

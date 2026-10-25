@@ -34,7 +34,7 @@ class ResourceState:
     resource_id: str
     category: str
     present: bool
-    pii_exposed: bool
+    pii_exposed: Optional[bool]
     enabled: Optional[bool]
     restore_allowed: Optional[bool]
     evidence_id: str
@@ -54,7 +54,16 @@ def _latest_states(hits: list[Observation]) -> dict[tuple[str, str], ResourceSta
         latest = [item for item in items if _ts(item) == latest_cap]
         presents = [item.present for item in latest if item.present is not None]
         present = any(presents) if presents else True
-        pii = any(item.pii_exposed for item in latest if item.pii_exposed) if present else False
+        # Unknown is not False: missing PII flags are not proof of redaction.
+        pii_vals = [item.pii_exposed for item in latest if item.pii_exposed is not None]
+        if not present:
+            pii: Optional[bool] = False
+        elif True in pii_vals:
+            pii = True
+        elif False in pii_vals:
+            pii = False
+        else:
+            pii = None
         enabled_vals = [item.enabled for item in latest if item.enabled is not None]
         restore_vals = [item.restore_allowed for item in latest if item.restore_allowed is not None]
         chosen = next((item for item in latest if item.present == present), latest[0])
@@ -63,9 +72,9 @@ def _latest_states(hits: list[Observation]) -> dict[tuple[str, str], ResourceSta
             resource_id=key[1],
             category=chosen.category,
             present=bool(present),
-            pii_exposed=bool(pii),
-            enabled=any(enabled_vals) if enabled_vals else None,
-            restore_allowed=any(restore_vals) if restore_vals else None,
+            pii_exposed=pii,
+            enabled=True if True in enabled_vals else (False if False in enabled_vals else None),
+            restore_allowed=True if True in restore_vals else (False if False in restore_vals else None),
             evidence_id=chosen.file_id,
         )
     return states
@@ -487,14 +496,19 @@ def decisions_for_state(st: ResourceState, rules: dict[str, str]) -> tuple[list[
         if st.enabled is True:
             findings.append("REPORT_ACTIVE_DATA_FLOW")
             remediations.append("DISABLE_DATA_FLOW")
-        verifications.append("VERIFY_DATA_FLOW_DISABLED")
+            verifications.append("VERIFY_DATA_FLOW_DISABLED")
+        elif st.enabled is False:
+            verifications.append("VERIFY_DATA_FLOW_DISABLED")
         return findings, remediations, verifications
 
     if st.category == "BACKUP_ARCHIVE":
+        # Archive listed ≠ restore allowed. Unknown permission: no restore steps.
         if st.restore_allowed is True:
             findings.append("REPORT_RESTORE_RISK")
             remediations.append("BLOCK_RESTORE")
-        verifications.append("VERIFY_RESTORE_BLOCKED")
+            verifications.append("VERIFY_RESTORE_BLOCKED")
+        elif st.restore_allowed is False:
+            verifications.append("VERIFY_RESTORE_BLOCKED")
         return findings, remediations, verifications
 
     if action == "DELETE":
@@ -505,17 +519,21 @@ def decisions_for_state(st: ResourceState, rules: dict[str, str]) -> tuple[list[
         return findings, remediations, verifications
 
     if action == "REDACT":
-        if st.present and st.pii_exposed:
+        if st.present and st.pii_exposed is True:
             findings.append("REPORT_EXPOSED_PII")
             remediations.append("REDACT_RECORD")
-        verifications.append("VERIFY_RECORD_REDACTED")
+            verifications.append("VERIFY_RECORD_REDACTED")
+        elif st.pii_exposed is False:
+            verifications.append("VERIFY_RECORD_REDACTED")
         return findings, remediations, verifications
 
     if action == "ANONYMIZE":
-        if st.present and st.pii_exposed:
+        if st.present and st.pii_exposed is True:
             findings.append("REPORT_EXPOSED_PII")
             remediations.append("ANONYMIZE_RECORD")
-        verifications.append("VERIFY_RECORD_ANONYMIZED")
+            verifications.append("VERIFY_RECORD_ANONYMIZED")
+        elif st.pii_exposed is False:
+            verifications.append("VERIFY_RECORD_ANONYMIZED")
         return findings, remediations, verifications
 
     if action == "RETAIN":
