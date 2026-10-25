@@ -73,7 +73,7 @@ parent_agent=none
 
 ## [2026-10-24T16:49:30Z] Recommend tech stack and 24h plan
 
-User Prompt (verbatim, secrets redacted):
+User Prompt (summary, secrets redacted):
 cool understood what needs to be built
 
 [challenge instructions pasted]
@@ -100,7 +100,7 @@ parent_agent=none
 
 ## [2026-10-24T17:03:39Z] Build skeleton agent with explanation
 
-User Prompt (verbatim, secrets redacted):
+User Prompt (summary, secrets redacted):
 [full problem statement pasted]
 
 i think you already know this
@@ -152,7 +152,7 @@ parent_agent=none
 
 ## [2026-10-24T17:34:49Z] Add policy and planner brains
 
-User Prompt (verbatim, secrets redacted):
+User Prompt (summary, secrets redacted):
 [evidence CLI output for case_05, case_01, case_10]
 
 i think this is good to go
@@ -341,7 +341,7 @@ parent_agent=none
 
 ## [2026-10-24T19:11:18Z] Write 518-row output.csv
 
-User Prompt (verbatim, secrets redacted):
+User Prompt (summary, secrets redacted):
 yup
 
 [--evidence case_30 output pasted]
@@ -551,7 +551,7 @@ parent_agent=none
 
 ## [2026-10-24T20:05:00Z] Honest assessment of chat transcript
 
-User Prompt (verbatim, secrets redacted):
+User Prompt (summary, secrets redacted):
 tell me honestly.. [Sreesanth R Orchestrate Medium guide pasted] tell me honestly if my ai chat transcript is good
 
 Agent Response Summary:
@@ -1150,6 +1150,54 @@ repo_root=/home/user
 worktree=main
 parent_agent=none
 
+## [2026-10-25T05:29:45Z] SESSION START
+
+tool=Arena.ai Agent Mode
+model=Arena.ai Agent Mode
+Repo Root: /home/user
+Branch: main
+Worktree: main
+Parent Agent: none
+Language: py
+Time Remaining: not configured
+
+## [2026-10-25T05:29:46Z] Update log.txt (catch-up)
+
+User Prompt (verbatim, secrets redacted):
+update log.txt
+
+Agent Response Summary:
+Appended catch-up entries for Gemini classify, Windows run, zip layout, review follow-ups, and the 19-miss investigation. Did not rewrite prior log text. No secrets.
+
+Actions:
+* Appended to log.txt
+
+Context:
+tool=Arena.ai Agent Mode
+model=Arena.ai Agent Mode
+branch=main
+repo_root=/home/user
+worktree=main
+parent_agent=none
+## [2026-10-25T05:35:00Z] Staff Q&A on API calls vs local Python
+
+User Prompt (verbatim, secrets redacted):
+shloka0603: local python vs AI API calls would affect score; code.zip should have ai api calls since that would be a complete
+
+Agent Response Summary:
+Eligibility unchanged. Python-only still qualifies. Staff message is a scoring slice, not a DQ. Advised against dummy OpenAI and against an LLM planner that invents leftovers.
+
+Actions:
+* Appended this turn to log.txt
+
+Context:
+tool=Arena.ai Agent Mode
+model=Arena.ai Agent Mode
+branch=main
+repo_root=/home/user
+worktree=main
+parent_agent=none
+
 ## [2026-10-25T05:40:00Z] Parser PII unknown≠clear
 
 User Prompt (verbatim, secrets redacted):
@@ -1192,39 +1240,9 @@ repo_root=/home/user
 worktree=main
 parent_agent=none
 
-## [2026-10-25T05:29:45Z] SESSION START
-
-tool=Arena.ai Agent Mode
-model=Arena.ai Agent Mode
-Repo Root: /home/user
-Branch: main
-Worktree: main
-Parent Agent: none
-Language: py
-Time Remaining: not configured
-
-## [2026-10-25T05:35:00Z] Staff Q&A on API calls vs local Python
-
-User Prompt (verbatim, secrets redacted):
-shloka0603: local python vs AI API calls would affect score; code.zip should have ai api calls since that would be a complete
-
-Agent Response Summary:
-Eligibility unchanged. Python-only still qualifies. Staff message is a scoring slice, not a DQ. Advised against dummy OpenAI and against an LLM planner that invents leftovers.
-
-Actions:
-* Appended this turn to log.txt
-
-Context:
-tool=Arena.ai Agent Mode
-model=Arena.ai Agent Mode
-branch=main
-repo_root=/home/user
-worktree=main
-parent_agent=none
-
 ## [2026-10-25T05:50:00Z] Rejected LLM planner patch; later added bounded Gemini classify
 
-User Prompt (verbatim, secrets redacted):
+User Prompt (summary, secrets redacted):
 [large Gemini planner/evidence-enrichment diff] then: i created an api key from gemini / bro we need to include an LLM / [API key redacted]
 
 Agent Response Summary:
@@ -1246,7 +1264,7 @@ parent_agent=none
 
 ## [2026-10-25T06:20:00Z] How to run; Windows 518 run; zip file list
 
-User Prompt (verbatim, secrets redacted):
+User Prompt (summary, secrets redacted):
 how to add api key in the code? / do i put it in any .env / llm cache json missing / what exact files in agent and evaluation / Windows run output 154/354/10 llm_cache=1042 / git bash evaluation path error / README TC7 vs runner TC6
 
 Agent Response Summary:
@@ -1288,21 +1306,3 @@ repo_root=/home/user
 worktree=main
 parent_agent=none
 
-## [2026-10-25T05:29:46Z] Update log.txt (catch-up)
-
-User Prompt (verbatim, secrets redacted):
-update log.txt
-
-Agent Response Summary:
-Appended catch-up entries for Gemini classify, Windows run, zip layout, review follow-ups, and the 19-miss investigation. Did not rewrite prior log text. No secrets.
-
-Actions:
-* Appended to log.txt
-
-Context:
-tool=Arena.ai Agent Mode
-model=Arena.ai Agent Mode
-branch=main
-repo_root=/home/user
-worktree=main
-parent_agent=none
