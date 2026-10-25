@@ -1,0 +1,9 @@
+{
+  "provider": "google",
+  "model": "gemini-3.5-flash-lite",
+  "live_calls": 22,
+  "cache_hits": 501,
+  "failures": 3,
+  "input_tokens": 2556,
+  "output_tokens": 22
+}

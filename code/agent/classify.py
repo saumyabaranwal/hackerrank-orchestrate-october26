@@ -81,11 +81,31 @@ NON_DELETION_MARKERS = [
 ]
 
 
+def _keyword_deletion(text: str) -> bool:
+    return any(marker in text for marker in DELETION_MARKERS)
+
+
 def is_deletion_request(request_text: str) -> bool:
-    """Return True only if the message authorizes deletion."""
-    text = (request_text or "").strip().lower()
-    if not text:
+    """Return True only if the message authorizes deletion.
+
+    Non-deletion markers always win (N/A trap). Gemini may classify the rest;
+    cache hits need no network. If the API/cache miss, the phrase list decides.
+    The planner never sees the model, so it cannot invent leftovers.
+    """
+    raw = (request_text or "").strip()
+    if not raw:
         return False
+    text = raw.lower()
     if any(marker in text for marker in NON_DELETION_MARKERS):
         return False
-    return any(marker in text for marker in DELETION_MARKERS)
+    try:
+        from .llm_client import classify_deletion_yes_no
+
+        llm = classify_deletion_yes_no(raw)
+    except Exception:
+        llm = None
+    if llm is True:
+        return True
+    if llm is False:
+        return False
+    return _keyword_deletion(text)

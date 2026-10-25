@@ -246,10 +246,23 @@ def write_output(dataset_dir: Path, dest: Path) -> str:
         writer.writeheader()
         writer.writerows(out_rows)
     counts = Counter(row["deletion_status"] for row in out_rows)
+    try:
+        from .llm_client import usage_stats
+
+        stats = usage_stats()
+        llm_bit = (
+            f"  llm_live={stats.get('live_calls', 0)}  "
+            f"llm_cache={stats.get('cache_hits', 0)}  "
+            f"llm_in={stats.get('input_tokens', 0)}  "
+            f"llm_out={stats.get('output_tokens', 0)}"
+        )
+    except Exception:
+        llm_bit = ""
     return (
         f"wrote {dest}  rows={len(out_rows)}  "
         f"COMPLETE={counts.get('COMPLETE', 0)}  "
         f"INCOMPLETE={counts.get('INCOMPLETE', 0)}  "
         f"NOT_APPLICABLE={counts.get('NOT_APPLICABLE', 0)}  "
         f"obs={len(store.observations)}"
+        f"{llm_bit}"
     )

@@ -1,0 +1,1550 @@
+{
+"2e7cd83939f1500d60552a60873d2db215299c91964e464aed17086ccffcbb34": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"2b4130414b9bb76d100d149992701e905ea81830a028e68b6a901479702f1f3c": {
+"text": "NO",
+"model": "gemini-3.5-flash-lite"
+},
+"7f64690668de29369f021aa4253f5176c6ecdbfef16b4e175d0fe3330e6c8d40": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"5bbf7d3c71c5c527fb523bd8f6a6e7e9594edb456e87a024b262a63d40c422f3": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"cee065f8a962a46964049999469c5f79bfb5bc577de4f237228779eecad7f934": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"6e0e651ce653665a990a8749ccacb4ac035a9bae353efb32283a355db0c4ad17": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"916cc0f3af6d58c2676d1a35001209527f08a5a88ab38a7705ef3f6f518e720f": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"da67c76bb9e636c5225c12ae9db6269595eb928c8e46f80e07e0eac484df0390": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"883924de114cde68e1bdd47700a40adaa5d58a02c24e61b2c6bef50153948cc3": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"1bb2ed1383fe8499bbd574dbb9f305b548ee01437423bd5892ac42ce02c6a22a": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"36234f0d7b162f41adabdfff8ce384fb259fa06c7dc48c7105f7e512a9266028": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"41d226741e6eb5fb15cf550d1c049aa461dfbd80ef0dc9ca81c1fc2e7faa9831": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"0b7c8b4d9332b95b48a5795c08effcbb4be88b696fb5a1de61beaddefc015a53": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"6d032494995c891615fc71d61d758172acf7cadec330d798ad8d3d812b48deb5": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"535a4b71288a3f4445a7b41227d63668566b4e0545afe4a7d4cc9b98c33a7507": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"a92113b430e51748a27caf63e18a26ab85b91c1cb213a94ee42ae1c1336a0354": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"d1e3543c49b50b7928d6218cdcf8f14fea31f9f90d359f9410f82f5cf08d0bd2": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"1932e9bfe889dc7a879c73161e2ea6acaa1e2c573ea690cf0ffafa01b8b79cb7": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"760c9f3625a04ca35f2659e5841a8cf2cd4e83f25bde520a6cfc2e00598077b0": {
+"text": "YES",
+"model": "gemini-flash-lite-latest"
+},
+"dc1790af345f110959f7ff57a2b6213101628380f9c4dd635172e57371642b7b": {
+"text": "",
+"model": "gemini-flash-lite-latest"
+},
+"f50e92cb5cdcca4592294fca6482304190cc01bd222650d5ad0036c236e775ca": {
+"text": "The",
+"model": "gemini-3.5-flash"
+},
+"4f440b9a90cdd85a81c7a3cce18dd3fe99c0d2dbb338059a3a4413bcbccd4494": {
+"text": "YES",
+"model": "gemini-3.5-flash"
+},
+"5c1242832e1127c1e11194784e946f7f7be36ab3dd8156d919b00145fcf8a6e0": {
+"text": "**:",
+"model": "gemini-3.5-flash"
+},
+"9f6ca013e32ffa167dd47a58367533cbacf430e2f9c5c1dc01f9a2903f134ae2": {
+"text": "YES",
+"model": "gemini-3.5-flash"
+},
+"87823e29cfc9c05e38ee4dd7cfea98aec4723993fb13dcb76f88e2b70d610f9e": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"a1634f52a38f5ed7aa8b8e0b04699ddb3d5e0cd8dd33e26c0897760e3702ce71": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"b4b4c097757272a1b1956708a9937f78149c792363e64e3e517e616313c9bf96": {
+"text": "NO",
+"model": "gemini-3.5-flash-lite"
+},
+"804f286048852153432d5f552333ddcd866116d28dc7cde0d51f74c81049825c": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"65f31e469e12e0da4b1391561850818e47a79f584ce9ccc5c79f2c09d38995ed": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"e53f43dd7c0e5c558e65f4639bc5be0c8922bd8cbeec02d4aa95f10b97cbee22": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"21994f5f6bda384a4fcf2b47023819de2edcbd952347961adb14df5c7211174a": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"d2b9b45a78a73b26c2f528d1d5151c44565a813ca15b06f5b761d023a9356782": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"df6cd73e1d2727a73e07c2adcb0bc58ee54d62d43515da9b1f5fa8605fa8dbb6": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"f3487a3d1b93c46b8bac8e9a2c0c978196eefe336d7e87b815efa2e543adb6c2": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"771d7533cdb420f7a283d90ea2fe3beca45a4a144bc5da807b56b9cfa92944cf": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"d2281e3c92afddddb13f81f04017c72e36fd5b3d6b0a590c1b331e50b5efc361": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"3821eacd16b9dc8d72f41a577be615eae4ba4c97de91d48fcbe37960430a82b5": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"a4381341237372904064628bc782d8a0c5499faa64320d6aab75857bd2eda645": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"7d73cdcde782a9f521bba51464cf60914800c85056da2b625533c9dee932947e": {
+"text": "",
+"model": "gemini-flash-lite-latest"
+},
+"7264fcca8241bd1e9ce8f894f559b27725940b15be9bf734d7db4d0bd4f5f6da": {
+"text": "",
+"model": "gemini-3.5-flash"
+},
+"3e50de3c1058d649b42feeb517ea4e4e170f1f9c5aa02fcfbccba18e5c7d5963": {
+"text": "YES",
+"model": "gemini-3.5-flash"
+},
+"573b96a1b6161c90f4ab5672afb247ee972b590d1f346f1e9f9e77ca749797b2": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"f2173f7f8a6128b9b434371522a7e53bf0200da4139f52dfce77421f3c8ae126": {
+"text": "**:",
+"model": "gemini-flash-lite-latest"
+},
+"9597ed0c5a124a307c513ddd67712da06e85f7afaeb5a3e010fba0a188878449": {
+"text": "YES",
+"model": "gemini-3.5-flash"
+},
+"77eef546704e468c7db93a2d06ed328a3307e1955500a474dae54b92ef9a1e66": {
+"text": ":**",
+"model": "gemini-flash-lite-latest"
+},
+"c88e9bf974f4e297ac2c97ed9141157156ba68e1f53ba4fbff69602349ff9f9c": {
+"text": "YES",
+"model": "gemini-3.5-flash"
+},
+"8b8cdf8ec0dc5c70aaf3ab8727b9c4c13d602f486a334f4287790fa32bb706bb": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"5eb96a0fe247994249089d654af8efcf9aaab0ed166f1c34ae7a914a67aa1607": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"321f2ef843554dd9a9f16ecf80d5388b330fab5209c4a2d17dad11264afb2413": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"89f575d96b25fc947db1ec84b620236cfb1171771be06e2278dd2ad5ee3b87ab": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"14fca22ae95a9a78d62ad7d7fd28c6ba7fc79e820c523e1c9487f292bcbe8fd3": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"ce5f06c8e2d9866fdf44a27583d883203e48cc4025d9e193400229768a396598": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"1efb71d741d8a7c59d5dd5e9d2af520596f923864ce92b4ae48036d145ee7de4": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"9dd72c3356153e7e86cce1b075ae8b232c8f1c36f1ae618188395c67b3cf4008": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"4c1e3f6bc596513cf1f2f6b677469be183e9873e969b923aa53b8dc912f74d7c": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"49cfa52a5a74fd73f8d2ad6db2a875e32319d496ec68e1d3560ee1ebf6e66236": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"8075c0c0840be3ac3650a01b4ab5aa9f858bdb478bbf84f01f8c7624e9d1e8f2": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"b8349deab9c4837a0a60fbdb21c14da8f478371b237d835c751d76ca06356fa3": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"3c728cbf26a68c2afde7a5d025d776a98d3dfadc0e01c255f75e8eb16a4b4c79": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"c2160c7b95c3c4397bd8ae26e9503f38500282c5059a759139ba592177917479": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"d45e2b0e873e6c8b6a9d8d98e3aa0c76ef3461b9f77f872fcafbbe4bcf68856d": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"79583d0927d1d5fe6c52640df88efcd8fd262cd2ccfd1525318c2a8586604497": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"dc18fd27d7eed6b77ae4639cd3705843194d7678386d15ec612f979a9427fbcf": {
+"text": "",
+"model": "gemini-flash-lite-latest"
+},
+"6dce4b641511a68419f60aca0b45c55410af39ec70d5d283ae18fbebc856d497": {
+"text": "**:",
+"model": "gemini-3.5-flash"
+},
+"947eb583b58f64b671b0128417b239b9265644890330fde0932f7e6128591af0": {
+"text": "",
+"model": "gemini-3.5-flash"
+},
+"c0f1c2a6ae592fc3b656b9750e4fd4614138e8b34c36906eb9979a641d55da46": {
+"text": "YES",
+"model": "gemini-3.5-flash"
+},
+"ffea4c690fd3873ebfa48b078a9a882e1ca028da6bccdea0a595a7f61641c33f": {
+"text": "YES",
+"model": "gemini-flash-lite-latest"
+},
+"5df7f2304ff9804c029307a18b75b39bc4c682480de64de0bbd96e94aa1d5724": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"45662a2e32e1a380e4cd7b6ba901a6695bc6e4dff6acd7b953707f69b0c97a1d": {
+"text": "YES",
+"model": "gemini-flash-lite-latest"
+},
+"7560f75e0bf05288d12e28f025d98330c4e5208b70e616a65b5db5b4725e6e2c": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"cb9924611ee14e59be7868f5ee651234af8c5a6330a532770c031595a16efe8d": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"19dd0daa662efa52d8ac6194dffe0099288264264401edd39805f551142af70f": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"f50a1f5c1e194e150d2bd011f7fcdccf05e67e60487fb75df9f88b4854b428f8": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"b0e554b27232247a3b897a1fce0707aa8c8617ebb4ea68bda698a94ae819fbbb": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"c03680bf3da6fb985df1b610fccfdf68f835e0d3051545b140a830676658cf66": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"f6b033a5c700b49a03859e00710016fd9e8ae42bba90614bf1c1a56cd5880f5d": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"cd1083f2ab56ff2f487dea6c6fe49b2defd81a07232d6f5abb698bf78387c496": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"4409f06de2407e83dfd1a5532517cfd573dd0d42a40be1b5b2656f20cb9c9436": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"5ad9e383184b2e87256993f4c9a6da18504902cfce54a1e8c5634f04e8b29fc9": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"9830190454c3781981da52c368cf719be7504b06d9d7882079142b3c08e7da45": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"e794a775746c0072c6721403a05728ed15a4997dcb3bdae92760051940d01318": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"9f1d5b276cfcb934eb0cb8d819b8e2779a30c34e3aa818e57b1bc183b4a74811": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"65354d87269a057719e23a8a9822b670e282e8da8d756483f751c4df4224778b": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"5c8608439eb33d4f634b48ef179c9c3140a1fa893bc3b9c6735eb678d72482f0": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"6ee5b954807a88a2e6d50b565c555c6f4d37ce7c3dec9714b24c6ce0123171d2": {
+"text": "",
+"model": "gemini-flash-lite-latest"
+},
+"05a2da9c01fadad1a0e8e7e1156284110ed543c2eff8ca8751d806d44781b5b0": {
+"text": "",
+"model": "gemini-3.5-flash"
+},
+"e24ceea3c8587aafabb7a42cb5cf274ab94dfd76d6bae93a1bdf1e67881593fa": {
+"text": "",
+"model": "gemini-3.5-flash"
+},
+"66cd8e23452dbb462c3b5598e45e2acb5b50d5bc6932259c71014c18a096502a": {
+"text": "",
+"model": "gemini-3.5-flash"
+},
+"63e19c1c36e2e6d639dbf5ba16b8b5ad4a23ecc5888e9ec0f92fd9bc9637f3aa": {
+"text": "",
+"model": "gemini-3.5-flash"
+},
+"767f9c5c0c387552245275c57126f39a9b8fae6f26a11c2050c3e5132d07948c": {
+"text": "",
+"model": "gemini-3.5-flash"
+},
+"00c33006b5ddaf5a62cfcde0831a289dfca3ab204641b4314da1ae2d1dc8e628": {
+"text": "YES",
+"model": "gemini-3.5-flash"
+},
+"96f3aa0d9e7575473d9e64cdce5f81b5969a06ab322b18715431ee35484f17fc": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"306c75731b913fe5e9c15450719abadcbfa88659aebf5c0ac05fdf7eeb9e5d6d": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"a281e714fdbc1b9daee8b51c59f79fa3147af257f8a159314719bab31b232925": {
+"text": "YES",
+"model": "gemini-flash-lite-latest"
+},
+"c24134732ded3eb4ae06c904e50f45ed14b5ab84130dd5e5c8bc44c017148cab": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"2c4e5d72155c44aaad73578437de6f1eaffb92fb337ba874c5b225ec35a7c8ab": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"3fc346bc04bcc43158211ad4b9d58e006d9d336c47ab6c00bfbbc5ced6864747": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"47fe8f7bf2bb1237726021d6fab0f0d19203820752f73d7827081e1ff7aa2b6c": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"2b0989e36dfa4932b1bc8922d9f52fb40ccf27af0f481e893a3e97853363e130": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"4575d4dc7ebab2b1d295a530c99d8bf6fb46bf17de0b21f3969291a396474248": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"ee69999b5f534c84059712e9884c7af37db606a849bad4800058885f4362e88a": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"ac2b897e38ca25c96e8c2227db5472ec91f096db49454d374d83bed5766121fe": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"4337fb4eb9e6124613779dc671f370f787404afa2e93c91ce0edc3d48e2b8229": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"22fa2eda48bce92d0a603743a97fae93959a37d9d41c021e67b8c7e6c2e49acc": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"faf8ce0199c7737b832cccea72a21d90cf9e6b734a2140b0692a9b6f40f48d6e": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"f350331cc3416c89158b342fea6c26e88bdb41d469355ac45e6420434bb8bc4b": {
+"text": "YES",
+"model": "gemini-flash-lite-latest"
+},
+"92e9b23c9623e010b6a2626c50d196aa358f804f9a996c241e7cc447fa4be636": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"3e2c8c3f6e823eb9d5ecef27ef82ec268a6e7e7b6d0b8d2c2b37e5b1ecf9fa6a": {
+"text": "**:",
+"model": "gemini-flash-lite-latest"
+},
+"16e6bad58c30fcabd77a6de16ff10c22a4e9ed08179996ee62696fb32ea3ca2e": {
+"text": "",
+"model": "gemini-3.5-flash"
+},
+"36959d6297b34521ffbe9342d9e9f107a354d0b83fbc9d2c3d7b846694abed32": {
+"text": "YES",
+"model": "gemini-3.5-flash"
+},
+"e65a53ac4525d47101a6d4f00173386cd884d288c818e6fe02f9fa9db225b505": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"70235db4cbb4cf80adfe96609e76fa6376c7136c334203e1dc7368842ce21906": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"453314a6b4f4f53bfe7ec5684e6bd0b1e31e289461887bbaa0615e71b1d77949": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"e1623b15579502098b0ae58ce1aef909de241083f1a9a9b5ac390a8f2af7a083": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"d9ca070868911176b1c38b328885b14ef35bbfa9d2fba7e3b68f773f28e6f6c9": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"100b02384a1ba7e9f52e7f8a3f7d05143b0a6c2c4d4ee93b2a0e67dc944dcb32": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"2bd41a26b1f8c4ac8755540a336e6927e3474e32925c1f955397fbd7866d4fe2": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"64c1feba41150e6d355bbb9bc53ff605a685824071a8e938b60e8123fea67189": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"29ae68de5867452011525d2680d9e91b281181df37547409b87e550212e30eb8": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"c763dd6a6a6de441a21d00d57dd64495b3755d839169c70d963becfd443da97a": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"d67c3fb32123c8af11cd684422d3265b2c203635b9d496bd405c7c6abb295f93": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"1b01b4c349608d1e2e779932aef714ce4142b3652b777f54535f21bc1b48e761": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"09ea1721bf09102d1dd187658a298a1c5b758a013300ed00b12f931be03876b6": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"0bac6eef583fefa3efd68cdd29a9d8bc5d9268ccf61830b0f53740b8c8b2f1b9": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"4aea3fed4cbadde04f5a0a90d84a40d1f2b47bcecbc56c355894bdd83820e103": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"488dae4a02ede7b9dd90a0442a566a2f1e617e9d1638cd416658527ec51488b0": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"6a3e01285371da2bcb26ffb8abe28fa83811494c4b6012f0de539e6175922fa8": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"d723651f2cf4f22a7d54b5d07740d7656aff2345bb232ff9df36667779aeb3a3": {
+"text": "",
+"model": "gemini-3.5-flash-lite"
+},
+"d4180a624c62b2037c411cfac5e992d9ff498e5d5b520d5e28a5961c6dd1a55b": {
+"text": "YES",
+"model": "gemini-3.5-flash"
+},
+"109906a6f33c0880a2c7233826bbe839e532b2aaf3ac33de77b4dbcbf0fc75c1": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"f2eb3cba7299d4b5686dd731e032e90d1bda3dd467ac6e96f3bbcb32207d6f0e": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"a06762211f154605e0e4c443a5bdce5e24ca238016f12adb712845dd30e62e82": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"6c1113594216d340a2652270a76013de3b3654ab24402cdd2ad355e26e8a3e99": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"30db82aedcb1abf569cf0e6834afdcefc15f5e52604b3cfcef947e0524a5db76": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"4b07b370d817bce5cdb058d8e43b04941473c23b8a7659ca6c0a4aeb2bba7def": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"6ff0242cbceff5266dd12b05439bcbca2eb5cc46f73cc15e12eb3e546c7abf4c": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"785956d0a5c32cfc6a8129583fcace8c200d41414ab32ef5cf33801d7199ecaa": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"68c1be80348e51c9c0208921967433fb9df6cf2f89f3af0b7c84c47c65ceb005": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"b6ae693c7cc982d963a96ea4e4dacc4df2bfe6c7aab9ec9fb8be93707627b38a": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"85ce2ddd98a179ddd2a1658c4310121171ec62e3bb0320306257ab0f017aad50": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"a406c1108f3d0612281b28919e7f06d37906dbfbc8a0bda0f41bd138de835a49": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"b43fb7830c1516493b344e37715b23aed7408d32a297dd1ae20cfd9619120d73": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"8b85b2471afce3a688533fff28b1fa8546fdcfc0c86f0d24e09d6d9746efc960": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"ce630c4dfc4e9df7ca2d3dff7e1b64506b1921b318a714a23a22d8a3cd669a59": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"955af53add0e27e70b1645c8991dac50fb2c721c5f17518d58439b6258dab7aa": {
+"text": "YES",
+"model": "gemini-flash-lite-latest"
+},
+"60d845300f07544f7c24df29f2d0ec65a1dc85f8b6c4196eb5881b4ed291551d": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"0d9ca5684ff361492685f3ae98384c082bfbb9db0752bcdb6cb32b15c878fa27": {
+"text": "",
+"model": "gemini-3.5-flash-lite"
+},
+"b407c47f4577ed8026a57b0a804456bf2380e8a51b4835c30e4286ece6dc0710": {
+"text": "YES",
+"model": "gemini-3.5-flash"
+},
+"63b5970b8a3caa69f0a48ba24d642ba57c0c154127e02f3b6b18321d5c79cfd3": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"2de23c58089692dd26c83f193bffd411161b44d1befd96b6ee6426d19f293319": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"152b838527d94e74be07ecd8bc50952e02e9d28c24de35e1ba48b19e5ead6b9b": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"63f336ff36d692fd85c4d9d9c1ecac545a7dddd36ca03f536864bcd6a711c23e": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"98014de8bf348ff223133918e0287173208d44b90281cd719ff410bf3c39b376": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"3612e2a534ce11f324051440da81d8253988736af47d8bb67a847fdfd80d9e86": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"a97d5cd38fcccfa6e507b328fc5a9f06b29b077b5cfea3570c7137719affb566": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"e6bd9d33cc4f1c92141b1784aaeb5e783d50e55f6c54bc889241f31ee92d57a6": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"3fc9065605c58ef39e480f7ab65d4096bfab4703627c46de3b2727d3b2c6c332": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"02f774fb7a195d879322ddedd6f5d18095d46a309e55d9a2d831d2e78da2e59a": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"41c55e9c5d4d2675635d41849885e4e9b4b6636f810b4c3a96916c4df6d7b13b": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"7fa6aa8fc7c73f1c2b0c873c5ea47183f3c1d6216e8ddce85e63de7446298374": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"39397a0bee1031d5a1b315f02577dd8d6b4c3298280a6ab8ef356e515e10f249": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"22e6fc53e4401b66954ca3297800e57d0b304907efbf2d242619e40c7e2c7b66": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"1393b34c00d61035ea7957a03cbde5e4283f0fe54f25eb6c01a113a59f154164": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"d9db47cc5d0ef74a0af0dc2bd047c1f2e8c8e49f7198deba42ca5b580d8748f8": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"f1c88e9f0faec91890ce15a30ee31368f14e0fc38f375c67349cc0b91d6ef61d": {
+"text": "",
+"model": "gemini-3.5-flash-lite"
+},
+"9aad43d6bc395e30be4afee3bdb2639b89d7436175ccd4dc6f67402a352ff072": {
+"text": "YES",
+"model": "gemini-3.5-flash"
+},
+"b96e97591ba46950320e5cd199fd71a616228268e4321f2b4bb3fd920c22857b": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"36005d89bfe3d671c809c6066c269279f9b7f9d3b68b871f8c666afa5e8b4dcc": {
+"text": "YES",
+"model": "gemini-flash-lite-latest"
+},
+"858ea6f45732d8d90894758e796edbfe19fe62eee0b7f29055511e707323ce25": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"1bb6b5c262def6a3c73735e618682d795d99816eee444642802be91c07e46e3f": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"c30633d7e95d6f87046ea57880a9e47f59b343e55fb43ce3ee7a62fac5b00e67": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"cfa98bd9d8b23d0c25f92ae14c8f832aa5e1d5f70763d330020c1a42ba2d7501": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"dd9eb1ecb3209674a4041cb928575382c276eede29044024fc261880fa1e83c0": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"05c7b6541c4943be31b5d6cd88f52e8f3f8c66e478a72bcd2189fbc45545b9b5": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"68558ba3a0033ff220be85ce88c1e039765d71fe1d23a0ec794e24d781c4fc2e": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"667714556202c4cb42bbd6dea2c829fef5a3f6357b589ab32fccade61fb6a184": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"95c865175169654c409b9457dc0604d22ae92232d097ccf6d5a2c57311ecefff": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"f5c6db1cbc0a8fbad06f1a8dd0cf0595d9686dbcb919839fe9f85ecb931dddad": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"9e1fb1ef375e31c6e1a6d17da262b1f8fa82a99a6fe1be6f671564764458f5e0": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"cbb738c2e57e6d3f0aa9856e30529fa36e627c3e33926db0ff2d241e1095e839": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"4ee68c14e4675760f828131b19a12bf6cfde651e0a22ca145d5c89811349e47f": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"674f00fea7221e97a89a4de5e954d1a2fc5b56e04a0d6476459a4bfe432651a0": {
+"text": "",
+"model": "gemini-3.5-flash-lite"
+},
+"5e0bfc653986edb843b749d9402c63429da1ab6137f2e233050c8432f6163fe2": {
+"text": "YES",
+"model": "gemini-3.5-flash"
+},
+"acdef74727beff01ebc3e20310eca470167c41c8e5b3b265278594f1e9e85872": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"c2e903f9ac0425f18f39bc35fd196f1f5f20f1ef113f5fcdf32baadd39471af6": {
+"text": "YES",
+"model": "gemini-flash-lite-latest"
+},
+"1f1c8a5f2b85c5241c894325688bb4e0773fb8aa4aa2665f309ddd8c792edeb9": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"f709620ccad39a5e4298e721e04edd8ae1c42257d819395c4eee7e7879a4f469": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"2c2c5e4434ad278dce1c145d26aad17680eda260386c3b1715731cde9f743ff0": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"9c946cfdd2ef5653a102916c606df13872b11f20fbeb1098ff917b72fdb8e261": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"751b413315776f8b2d20e47318e1ec46f1065c373b9fd22f1980987d10e899d0": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"988dd9043a23bad735f2c12339c46d7ca9c88ac3635994a4ecc352308fb07ed4": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"e5c457c1290f8e4f702d82d9266378d8d5ecc10066bb7eba98cf93c771f2ca1d": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"59c76bb2b6ff48251b01b84a0098b0240b465d235172d0e11ad39745937393a4": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"fe4ca4589da584d0de127644a002272c01cd21eb6037c75b041036013461a1a4": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"1f0a5f22f1bff041d3b5f315d49b67dd363c19e1bd5e79c88561bc21580ff652": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"ec78e39fa23056652e736c84b08f7a507d270e30b189c77193ee6a2622df32f2": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"b2d90f4969d01c859586335235f38a5e8fe5a0c952dc3b0b02ea0b89982585a7": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"45bd7f372027bf99482fa3b5a892c73fbcbed707c8fa2ec76618dc8816b8b716": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"fb7dfb10af80cdf672ee35183854945fda1a3e887774d33e0498b354f52f5d77": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"de3d20b5f59a575a27cefb035696d888e37858bfd1e2dee8ead4d09a458339b9": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"453bfc50eddbbaf0b47c9ff1d120ae094203948e428dd79c9a8dc9e1db7e7998": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"9f3fa188e6f6a4facb40938d7dc6cd36dea603d96e7b32960ffdd686e27c81ab": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"e01e4e27ac47f5fb3f1c44eb53a6c38543062b88e77caa8a68d586f856b1c0e4": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"e4497dd25c1d7af8aa8e504fd023c02831060539de167a496cb019f79e9cd2f6": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"e0832754f2de5c441f87ea19a53d4237708dd8885d920b77558df2ec570acfe8": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"cd517bd109314824892083f3297d15e450e5f21b063c6a15d18cdb76e61553da": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"b4d87b52171f94b9295297b0bbe1cb640b998f289749d704884aaabea1d07174": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"102f318dd438fc336a796bee0f7c392d7a2298f12e2976f3737780f0457e85a9": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"47032e5cef8ad369d25ae8b8ad1640fb35c305984dac62631c7bd77cb638cbdc": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"cc1258168042bc63b6f5caa301434216677bf0105e7db10d148468d07b73c937": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"62c3a3dbd098a410f57501d550b75daf86a4973276658b2c5e1dbd1e406a77ee": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"ce100ed8797934a82dc1b3ece33a127405db95de35037fc5a4169ab937ecc3ed": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"175287974045d23bbc88c9aefedddeb47d8a64ec190fbf1f94ac918edd052c31": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"4ba39b3631b967e7310b6fbc718a4a13aac2b12f9db330f0cf7aee516189ea1f": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"5a13d9bc973ef0c917974ebfce47c68a84ff22829021dbdd3d17fde03f25661a": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"f16883d01ef205ffb4aff733c7d20c49fe2577924746ae1d729754b9e4ca3e06": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"e6d4025a85c66b5640e02490db4147f7e3dbea42ab433b6a13aa2f1937a654a1": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"46986a5dfbd1eca0312749f214726f4c224db006082e61dab608757ad030da34": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"95633f4b5f68f7c1e3ab8d5f7cf370bf09d4d87b94d0e31e83cfd2e01b5ab1eb": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"7dd776e7f512319fe6318509df6e48e281dd55c1d31f66b355a6444909a686e6": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"7982344a24af05eca2b61babecb128e41405c8f81bd1a153b64f813bb635fb18": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"115382676601cec04b77227afe65d5b2ef7b4823f7bd0439db83eac86b8ea4ec": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"34ce2445ccff1acf13e1d49c2a5c7ce1e54343d4e57f6c14c2948bb30edfd61d": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"be41dd1b8ad4e5cdfda790ced730e39c5e80b8f89805d7abb72c220f03e9ba9b": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"ed9d477e3d83cc9ed1928faf8ed2437341995b26b2692008444d13900c6eb82c": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"e0fd9f4819189f30ad13f668dc823415b9a80c0337fc6f0a659b08a6b2911b61": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"46a02c02b09a6af7052263903dbb4d0c97b35cbf82d7cc0ab6677c7edc76160c": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"02638c0c972a0b4fd19b74182ba9284caf80b6ba777a702cd3b5f1ee8212b79a": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"ed8871e9de6509ebe6e4be8508c2c4d20b81eb65429a41f26578d5e80186449e": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"844d06f341edc9c02ba9c9d92e64cec93aa06e24d0e15a036858cb4d95b40c91": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"2848157a455dfcd86a632364af3ee4cdb96f04221b465d52d8a456417d395631": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"05953038597fbbdfde900ee790399f40a19f403f892d9d81c5445d3992006443": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"629b74561acc4bde03b54736e6b4238e79e50afa0183b0118690e93d31a3b94d": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"915f4ecaf916b62fc151e2d59778d1be73d580bf44c353226c5fb6b2f6151e7c": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"b81c5378e3eec5bf2b0e491120a9109ff576d664a23b05acb4fa83ccedddebaa": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"3971ac7cc774f9835f0f650bcea4ce04f7baef26ef7ba9d00a7b290743659d77": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"7bd277337b0be8e9214a4070af8ec8be265aed2aab937955f29679ed38f829fd": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"7a909670a1b6d70a841147d789def986f0dc8256eace8e7cb7278b336f7df958": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"b050cb367b7efb0be995c196dc7ca2abe7465099f4b4988cc2f1d04e137c085a": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"a1c7963382b763866cff8df55f255bf0ba6f18903145a11943362097de061185": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"b1e57026ba0d93b7b75f6f64aa8a4413a83ddecfa84978c489e7e1c34486d5da": {
+"text": "YES",
+"model": "gemini-flash-lite-latest"
+},
+"64417bc3bd8b4c24d5f4d02acac8ca417b991d4b49aacb879be9d98505246996": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"cf3c4dbd205439b6d8899664abb6cb1a56346777e85c3acbc195b61d83543f30": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"8721a4dc272dff66a94b34a64a9497a05bdfef59865e61a800cc10bc94efcfa7": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"fb44f7bf7cdcafc5d07ca092457e88d86ef9e1d99be95e59503d1ed974eb939a": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"71c0275924819c52f09cf6eb9e8049c0fadb165014a4795a35928c86b05ebb0d": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"90eb16dba31183bd8da0dede82b27cd48e07d4d3a32511019fcf502dd1e80f76": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"863098eec04652852ca5cf846fc9769b5bb10e969656fd5780bf3e001f820893": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"fe39b133d8c8bd841ff0f241465c483a8b861530482e19b9cf9637d4fefbf131": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"879d70301c39e268298762c7fae7e8a8dd4647c38a681e5d64f68478c2f43708": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"18c4ab923accacc897a76053f7050a7d5676ad6132b413c7f88fbad3b2386c3c": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"3ad58901ae6bf8921b10118af327acd4b6778251ea1fb422ddfe1dea729e9ff3": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"6c5c37695b77cb8cdbf62f53b4bb67fa1405be9073e93302c36769ec959c0584": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"1950cbdefb52ebd2704d2c8bba87e21448fecc4b07cfa5b780d4459d2a3d704f": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"0bcba9d1873accf796165a5a7ef1b915c5754d40afd0c41fa8b2e3c4162bb3a1": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"343edbd88aef630bc24f87cbe520809d9b47981c08029bb170ea74a8f7121376": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"2908e37d531f90b11337101ce19540b5f0766e83671722aaf2e89b0b8f3eb69c": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"00dd48da6689d30b8d84612cf75e2e7f092fd7b49111569ed45f703927411cd5": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"e9a46be1a58a285aba73a9a7802e5351dfad38501f0258d51f832d5ea9901a0b": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"84b72ae00c9144a98dde2634e9813e32c45c364c05625fe7305bd951ddc3aa22": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"6be5c4e53608325e8c8cae900ea8b3c4d142d7d17fcea03aff3c569837e756be": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"ad550409eb1492a0f174689af215d4b3c36f17fd970174a9bf837b8ac3e0124e": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"d3878372a003775b28105de00e0979818805e64bb8688afccbec37a1a4e00423": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"b1270f6c9f3fe50b41b92ac5b8ef4904d1825ae5a69b9f30baf0ca92c224fd97": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"7b063652b1527068d9ee24d32c384092ab2b7c5ff9e76dc84873c1407180d9ae": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"65c5a86ad7ff5b021f4f90e66c0290e3414cebfb781f519b185a7e71f844594c": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"de15ad65d8bfad8807fd0aa04b2cf27d9412dad53b8ec37ce1c89be56346c460": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"19835cf21f2ccad461f88bc754b1cd48a5200595f6ebc3df266fd23602b01089": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"26aa3ab5cf8475152c36eebcfa6af5ee5db57f4bfe5d2569dd4197a2a14c79f4": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"6a71c27227ad6ac7e4ac4bdcb6c5193caf7f65d163a16cdacdabdcbbcca97e59": {
+"text": "YES",
+"model": "gemini-flash-lite-latest"
+},
+"001af2f9c7d0845d1251762939108174fb92d27ed4e2264d987277b8e453a644": {
+"text": "YES",
+"model": "gemini-flash-lite-latest"
+},
+"2a390bfed024b9214247f3be69879d0fd05026b0d52a26d098ae72220d92252e": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"c1e22636a55c0c3dbeb1d00b515b3c5c0867c262750c7663d1477fefea27f113": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"1bf36d79bb74bfdad57906e4155ecb3b0060d1b453d9926cd25a82726e610dae": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"8d16571432b000bdc2bcbdf738521c3d17a424fac0072f9a653c2088dd4297fc": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"8468ae23c6f3bb2b0edb83affc312cc9e1bd77d82c465eae80535d0859930aa2": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"3e28603d60b8cd836153cea37e6706ba7076ceb52e1b5c8c60c6b72bd8834dfe": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"5e36e730a9475dae9171d3d50bf2359bd4b57a83ebcf4a94a4b6276a688191a5": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"f5c82f1b202db4ab36d7a7130fc0a9f84278ea641ddff298b976ec246c92f32d": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"607c95e62d7478f43f07c2884204cc6a1cf2e23fbca78259753f60e590c0472f": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"bb22dd72fef67a04f4e74302f5ba33d45b953545c803368844e59d359e703114": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"04029de51207e8442eed7c36b68c4125461350a2d060df68d502bb7fb7fbb420": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"5d2ac9dd320446cc86a75fc2037ebef3db2bcafb0c783e6b63f3865ba2323944": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"85141f088a31c4f3382a92d11ad5f397ff16506f54ed52687fefd377b8763742": {
+"text": "YES",
+"model": "gemini-flash-lite-latest"
+},
+"cf4c124140a4959fcb2342595cd4f57d2be69faf1580410b1ea69114da2d1d81": {
+"text": "YES",
+"model": "gemini-flash-lite-latest"
+},
+"10ea6267ef3b3f333012102277ebec8ea91627e5c91fab0a42b6aea8d629ae70": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"3478ea79a2952e69c018f24fd6870794a8666164e0e1d61b4dd4cc236b55d7fc": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"17bb61d15c7fdb5f7c3fc6d988b8d2c23f5d117deb1d63421f6b84a319d10e3d": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"492fc67c0eb091b4e878b3cd44a437d5625103e3ccbc9fed7f0d0a977f1da9af": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"f7e31d50e572b610f73e778ed32de86636ea581fd3f155618d61f68c4b91b4b2": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"8dd3774876c8c79e010ff71d12a79f9082ee75065d91480406ce398ce4c08b6c": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"9aa81537bf79913a2265d17669e165202834ebacd73ac4cc7e3934864278c3e3": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"76d0628077f10d36697e06dc1121accfdf48d02535379d4f4342eab8510c1a50": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"af06bda7cf8aaae531adf92d98172fdf477fe958ae1116eabdbd6ae67af3983f": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"f32e514cf84dfe18f10b278ec287cb46e3bc04b773669eb6c434db6703864026": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"db7b26c0df14eb548b11b99ca900020b8f0c735ae571a185c88d9f373ba893ce": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"9c3c85dcc9bb21a088e6202e0d755e22f87b561ed2bf352b4cad66ba061ddf96": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"21ff2f826087248e394c04ebbd5bc54d275c34952b145bbb59aa758ee0acd7b1": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"4ba57b8106c799a0ae5f91a9db01db0f85fc3c19373120704b98cef672b4071a": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"b19566a97146678d0ca7c594e1fbfffc7337e0392c6598c5d456d976528f36a7": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"da858dcb428935383217f24f51fcb2c4eecf6cf7e39d40091eadd184a862f009": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"81c76229e8004ff02bce74f482d101b7791bbb4f783b1263b9b5d072b37b184b": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"11c3b94f4a46aaf0e5652d6b56fd5b6fd43117104cf76a4330edc1b8ef0afbe4": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"e7b815e6d2388baf855fb8fb96801bf4610b9b3512844b30dfff79f33acf05e3": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"9b319f88727ad8fbc55b111db093c96c9de6b0f4e6090a63723a23eef198ea43": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"7fdcf14592834335177fd7896ced553b26382f0317fdd5113b8311de8aac876b": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"dcf50e5566b2b8ee5e3a569d56e05d1260c4b558997b15079a3f328718483ea8": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"65435f799a70fc2634006cd99ba1158c02d930bc2385e9df459e2b647223f7cd": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"8462c399a81c6232f6bcdad446455c5162f488d4e9f2df30422567ae4a1b96d7": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"49f66ee2efb2b3738d1feea23db40c134e3f65a2c548189fa92479793fa57581": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"ac9e0bb71b20f80e7d881bcc66a23968db0d2d9bb39d3b01ac73f4afb5fd2866": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"9aee6a18392f54313882ba6bb06776c5448f84d118e4385b6032bd583a340f2a": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"b641a19226ae24710b4fb303cbeaf2eed1394ece87d9b6195084c49c62032adc": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"429bdf7256bc434ddd67f193489449f23d89fd864a72d8dd9f28a7ef7aad16bb": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"72db6c8c7cc5aafc1db4fae9667dcfc695db4fc40c65788ec4f141ee5707a216": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"d6ee8df7d0f18d2b384dedfa2343336ff977a49df243c0d2429030f8f8908461": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"00e7cb37519746c149347cf81060de79118d784e8cb25dcd686c77f3d84440cd": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"008abe1750f461adc5e6d6cb94a0ceaead57308d575ad4cda1668d7369e6c69f": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"79448d8304cb5ff390c06ddf443c1176d0245ad859dac4523c7fbf8507533938": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"2de8fdf6f80cc88ec17ec9d92b384638cebedbe21386d1deea220ae7923a26de": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"2338bfe10ec371c81f6fd5a70ac9ddc459891539b7b58ad4189d22237f9ff091": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"7226c6883bfad09fb9c59e481ecc80c30f746a6015170af61441b68d1cec701e": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"1565b38f50363dbf0e9c41d5544c2e1d7195e0fc1eaf835c43c52ceb1b49baab": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"879b7c8534531502b584a774465d2b7b69534a0ea7ad55b3b781cd07e1fadb04": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"7b56ec00064b5da25e55de8bb034d9d3c05c7758f33da4e7618b27d29b57100b": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"424511840d07230bd3d22c8fa2dfc02cf821f7fce537833dae6a184bf6a68291": {
+"text": "YES",
+"model": "gemini-flash-lite-latest"
+},
+"2456ae76bcb5dbe3ef238752185eaf93e71b53835d709e6b2a544e3e53fc36ff": {
+"text": "YES",
+"model": "gemini-flash-lite-latest"
+},
+"8d6f25250d344556b214cc8fe4a64e45c954c472c24d107cb67ee3fc99a84e42": {
+"text": "YES",
+"model": "gemini-flash-lite-latest"
+},
+"5580feaa679828ae8a35d2f98e03c2b1663f020ea192b28a2d3264df4234f04e": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"6d4f0738daf34cd6f052520a2964cf1bb1da1541e3d6a00cdc5104cdec7947fb": {
+"text": "YES",
+"model": "gemini-flash-lite-latest"
+},
+"be20de162b3d52a432d3f6eb5f4e31e35a574a5e00459932a8860289e844e27f": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"382501a5b6dac3824c92b12a20054a9a2d1204b9df85debdefc1c76f8a2dc041": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"2440cf41d75e0595b8532e6c52cc04ac0bc6d3570a43b89b34655a0a1802161e": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"fb24918cf9358a99be09aa39979cc890ed760e271fcddef0ed4201b9088bc885": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"3c97684688dbdc0b8089a688b02b519b1cd872dd0cdee6512a100be5e0ecccc5": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"e7ef58fcf606d88da234e690d8db4447090f042d52f69ae7fd910151f699321d": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"2683bc4412fe17ad438fe94ee736b4733416f11c758057fc73a36b4927af4cab": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"f145fadd889cc24540d2fe9f05d184f741eb02042e38e02f48be5e133d385fa0": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"85e68697b0d2f274e36855ffd8195073b5b3594b559e435b4813a32bc07e2485": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"d014f847e84a509d2973835100e47c02d5fc6cfb9353e08c39b3aaa6e47ccde3": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"80730c48e8885f9a86622b9960bef5cbb2addf3fb39e62c95a1589c9349e2d0c": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"0b9f29d6c56a20f25d001b85cb3aed304ae5ba66a72d94c61a151c5c81a38807": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"2fcf928cdc7ec34842ae10b456f9a6bd417b5a961d0d6ce0c8f716ccaede8115": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"241b6c230ce47b2f1c7e10b286955ef01b222bd45a1da5ef2c9d8eb0a28edd6c": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"98b4a591dbcaa73a55ee072e15ddd7186a9f0d7a29c82f51baa5113727857bd7": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"96c2a02d3d8c5c5d9f8ab2f577a1810970f6db62313f300fe4a246700a22d655": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"d09554693f43cb09f434a822e3a0644d2a2ca73e48c64af90d3558227dce7922": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"5f15b8d888c95757bda73f727a31a473c8354ca38710143c60f439f7afbdf2d8": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"dc226928319fd477d5ddf57bd0196831a0e83c2f80fe713d0bdef9c34818e201": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"73354f6614f1f979aaad4d960f26d3ce57708407b995e8d17926c2573aef4868": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"90075b46f456725b3cfede5523ca5ddb232e6a504c8908f414e693815d4f01c9": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"a3e01909b86c4e3e73c2aa0a911231089c028ab6bfd7b8b29d0fd072c7410f55": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"8164db4e1e448645e1c7d36a3f66366582f5fee30f560eedc8933cd6b5a85d0f": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"438a3774dee0fbd500f720a8c5fdbf9d8be123bce4e51107f0ea10d76bd92f9e": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"6de8ea96d45aa355f743139672e0cb8693e780b602bec3d585b3a8d47f960f49": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"e9fc3a371419b1db97b34673e4080da8fda449af319be911794a5d33917863a4": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"8645e0a72d2f32ae85059fe7a46fb5e885aa3ddcbf251f8249655d1b197bc1cb": {
+"text": "YES",
+"model": "gemini-flash-lite-latest"
+},
+"d811c9bae3643d41584b9a4c06d304435926da2b2ffe1d687adc472189ea5f89": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"610ae09340f476f62b723a7713bafd1f5b9ad8cdbd7435d8ec83457269ec65f8": {
+"text": "YES",
+"model": "gemini-flash-lite-latest"
+},
+"7ed1880ba7fc38bf53eba6bbabcb02c5449ceeb66448a8d11601dd3e8a5c01c6": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"38f3bdb6335003f4c5acb9190f90fb063b048d5746aefe8f82b4c6c5309cf2f2": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"a502529d7471b206d4254e6811487f2e4dfef92d1f274df2b643a3619d01558e": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"3026969e11cdf64bd8567bfb321cc99bc2908d61cb021f306e41e236fef8c7f3": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"eeae1d883f4a6c6d60d22d431eae2cda694ea6c181b01bfbcf83b031337b9324": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"bbc72a1e74237c7613bb188313ba243ad8da3627d566dbb77758cf438865a83f": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"3b7e44fe048b13dc87858ba2d48d006bb4e8cc899f3690fd04fc4fc07702e812": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"afd3027cddab787203c660e65b69dd0ec87dc2cdf7ef4bc4fc566f37b25bf88f": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"3d38885aeb11cb426ba20880e0d523a49a8cdb57dbe9a15a7e2528e78e34910d": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"3b82f5372a70a89da9f9a59cd1efef5ddf4ca9234933d4b925b71f972ff50af0": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"eddf88a64bdc68fd69d07df591a25f9425c76da6985e7411a6043d48beb9b57f": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"8e8eff5ac5627967fa1812d925a4ac52357a74200ee74294362cfd592ffa02da": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"7f9e66ed86b2964778772719cad3bc8d05218b5e150e5b26f59d660aabfb4b74": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"9c2eb1144f9c8dec45feb0356df12e593bb3101713f8926d8016a04904093179": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"b35a8205db7d5f91a12271b65d9ae940a9ec349dd3b9e9f7265d72ab503ec511": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"a7ddfb072703e8c9f0b111a93d98a9a1d4a23c3a8cb685d18c54b413249a825a": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"621bfdbe990ef51223a21d11524983f461a49418f8a8f115eff97d5df27357a6": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"2428777e7c172ace96e0626224a4cbd7c62e4a6c47820a0a77459626fc3f19e2": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"c842bccf5087508835bd8fa71dccac259af73867548692099a6f72f9ade3d8be": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"054fc35c3e635e2e915352c6e0609424985654f8ef9ebbd9422edb4a7ad36153": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"c3a82875860a8eb2a8ea1bdc109cb54163e5ce5241f44f03a62d072be52f8ce4": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"1329188a0ba47af1b28c4f463a22a1872f260ac66bf251d9b50732078dc1ae4f": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"5091b85c55760f176cad375a2b08f50f013d41e4db41008733550ccbb82b3a56": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"b9d289e3ad69474d07924dbd91f1c8b1aad17011774a4ab696d63487ddd37dde": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"53579ee5d8eddd75538f869ff29630ff66a09d240c1ddd2ef769e87413dc267c": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"6cd3ff7ea9fefaee9e6fb2f1c020251b5cdffa4eb92c4288514e2f171ad53d0d": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"29329b9501d7e3ae562af4fcbced7c248053f0739b7f989ff94b9f8489a29cca": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+},
+"e927f8cb6250df4a7961659ba64e6844543455e369824ccf86a147ea33793101": {
+"text": "YES",
+"model": "gemini-3.5-flash-lite"
+}
+}
