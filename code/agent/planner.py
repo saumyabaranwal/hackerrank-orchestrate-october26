@@ -358,13 +358,16 @@ def _assign_unique_events(
     events: list[dict],
     needers: list[dict],
     owned: dict[str, set[str]],
-) -> dict[str, str]:
-    """Map case_id -> resource_id. Skip the event if two requests are within
-    MARGIN seconds of each other; each case keeps at most one resource.
+) -> dict[str, tuple[str, str]]:
+    """Map case_id -> (resource_id, activity_id). Skip the event if two
+    requests are within MARGIN seconds of each other; each case keeps at
+    most one resource. Activity is a claim: we cite activity_id, not a
+    random later snapshot of the same system.
     """
-    tentative: list[tuple[float, str, str]] = []  # delta, case_id, resource_id
+    tentative: list[tuple[float, str, str, str]] = []  # delta, case, rid, activity
     for event in events:
         rid = event.get("resource_id") or ""
+        aid = event.get("activity_id") or ""
         when = parse_ts(event.get("event_time"))
         if not rid or when is None:
             continue
@@ -390,17 +393,17 @@ def _assign_unique_events(
         second = scored[1][0] if len(scored) > 1 else None
         if second is not None and not (best_delta + _ASSIGN_MARGIN < second):
             continue
-        tentative.append((best_delta, best_case, rid))
+        tentative.append((best_delta, best_case, rid, aid))
 
-    by_case: dict[str, tuple[float, str]] = {}
+    by_case: dict[str, tuple[float, str, str]] = {}
     used_resources: set[str] = set()
     tentative.sort()
-    for delta, case_id, rid in tentative:
+    for delta, case_id, rid, aid in tentative:
         if case_id in by_case or rid in used_resources:
             continue
-        by_case[case_id] = (delta, rid)
+        by_case[case_id] = (delta, rid, aid)
         used_resources.add(rid)
-    return {case_id: rid for case_id, (_delta, rid) in by_case.items()}
+    return {case_id: (rid, aid) for case_id, (_delta, rid, aid) in by_case.items()}
 
 
 def _build_activity_claims(
@@ -444,10 +447,14 @@ def _build_activity_claims(
     accounts = _assign_unique_events(account_events, need_account, owned)
     analytics = _assign_unique_events(analytics_events, need_analytics, owned)
     claims: dict[str, dict[str, str]] = {}
-    for case_id, rid in accounts.items():
+    for case_id, (rid, aid) in accounts.items():
         claims.setdefault(case_id, {})["account_id"] = rid
-    for case_id, rid in analytics.items():
+        if aid:
+            claims[case_id]["account_activity_id"] = aid
+    for case_id, (rid, aid) in analytics.items():
         claims.setdefault(case_id, {})["analytics_id"] = rid
+        if aid:
+            claims[case_id]["analytics_activity_id"] = aid
     return claims
 
 
@@ -469,7 +476,7 @@ def _apply_activity_claim(
             pii_exposed=False,
             enabled=None,
             restore_allowed=None,
-            evidence_id=_newest_system_evidence(store, "account_service", audit_at),
+            evidence_id=claim.get("account_activity_id") or "",
         )
     analytics_id = claim.get("analytics_id")
     if analytics_id and not any(st.category == "ANALYTICS_PROFILE" for st in states.values()):
@@ -481,7 +488,7 @@ def _apply_activity_claim(
             pii_exposed=False,
             enabled=None,
             restore_allowed=None,
-            evidence_id=_newest_system_evidence(store, "analytics_platform", audit_at),
+            evidence_id=claim.get("analytics_activity_id") or "",
         )
 
 
@@ -491,6 +498,8 @@ def decisions_for_state(st: ResourceState, rules: dict[str, str]) -> tuple[list[
     remediations: list[str] = []
     verifications: list[str] = []
     action = required_action(st.category, rules)
+    if not action:
+        return findings, remediations, verifications
 
     if st.category == "DATA_FLOW":
         if st.enabled is True:

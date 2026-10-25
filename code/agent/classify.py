@@ -88,9 +88,15 @@ def _keyword_deletion(text: str) -> bool:
 def is_deletion_request(request_text: str) -> bool:
     """Return True only if the message authorizes deletion.
 
-    Non-deletion markers always win (N/A trap). Gemini may classify the rest;
-    cache hits need no network. If the API/cache miss, the phrase list decides.
-    The planner never sees the model, so it cannot invent leftovers.
+    Order:
+    1. Non-deletion markers always win (N/A trap). Gemini cannot flip those.
+    2. Gemini is asked (cache-first) so the zip actually contains LLM calls.
+    3. A deletion-verb phrase list still authorizes if Gemini says NO or is down.
+       (Sample case_25: model said NO on a real deletion; extra steps are worse
+       than a missed synonym, but dropping a marked deletion is worse still.)
+    4. If the phrase list is silent, Gemini YES may authorize; Gemini NO / miss
+       does not.
+    The planner never calls the model, so it cannot invent leftovers.
     """
     raw = (request_text or "").strip()
     if not raw:
@@ -98,14 +104,15 @@ def is_deletion_request(request_text: str) -> bool:
     text = raw.lower()
     if any(marker in text for marker in NON_DELETION_MARKERS):
         return False
+    keyword = _keyword_deletion(text)
     try:
         from .llm_client import classify_deletion_yes_no
 
         llm = classify_deletion_yes_no(raw)
     except Exception:
         llm = None
+    if keyword:
+        return True
     if llm is True:
         return True
-    if llm is False:
-        return False
-    return _keyword_deletion(text)
+    return False

@@ -130,9 +130,10 @@ def _generate(prompt: str) -> Optional[str]:
         return None
     last_error: Exception | None = None
     delay = _RETRY_DELAY
-    models = _MODEL_CANDIDATES if not isinstance(client, tuple) else ("gemini-2.5-flash", "gemini-flash-latest")
+    # Retry the same primary model. Do not rotate through four ids on three
+    # attempts — that mis-labels the cache and burns the quota on dead aliases.
+    model = _MODEL_CANDIDATES[0] if not isinstance(client, tuple) else "gemini-3.5-flash-lite"
     for attempt in range(_MAX_RETRIES):
-        model = models[min(attempt, len(models) - 1)]
         try:
             if isinstance(client, tuple):
                 _, genai = client
@@ -171,7 +172,6 @@ def _generate(prompt: str) -> Optional[str]:
 def call_llm(prompt: str) -> Optional[str]:
     """Return model text, or None if cache-miss and no usable API."""
     _load_cache()
-    model_tag = _model_name or _MODEL_CANDIDATES[0]
     key = _cache_key(prompt, "classify-v1")
     if key in _cache:
         _stats["cache_hits"] += 1
@@ -182,7 +182,7 @@ def call_llm(prompt: str) -> Optional[str]:
     text = _generate(prompt)
     if text is None:
         return None
-    _cache[key] = {"text": text, "model": model_tag}
+    _cache[key] = {"text": text, "model": _model_name or _MODEL_CANDIDATES[0]}
     _save_cache()
     return text
 

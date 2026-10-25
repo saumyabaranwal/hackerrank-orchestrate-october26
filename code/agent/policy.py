@@ -98,4 +98,4 @@ def required_action(category: str, rules: dict[str, str] | None = None) -> str:
         return "ANONYMIZE"
     if category in RETAIN_CATEGORIES:
         return "RETAIN"
-    return "DELETE"
+    return ""

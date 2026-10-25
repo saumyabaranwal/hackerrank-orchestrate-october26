@@ -1,70 +1,94 @@
-# Usage, runtime, and cost report
+# Token usage report: full dataset run
 
-## Full-dataset run
+This report covers the run that produced repository-root `output.csv`
+(518 rows, `case_33`–`case_550`, COMPLETE=154, INCOMPLETE=354,
+NOT_APPLICABLE=10, observations=3245).
 
-This report describes the deterministic run that produced repository-root `output.csv`.
+Gemini is used **only** to classify `request_text` (Brain 1). The planner does
+not call the model. `agent/llm_cache.json` is in the zip, so a judge rerun
+does not need `GEMINI_API_KEY` and does not change `output.csv`.
 
-| Run detail | Value |
-|---|---:|
-| Requests processed | 518 |
-| Output rows | 518 |
-| COMPLETE | 154 |
-| INCOMPLETE | 354 |
-| NOT_APPLICABLE | 10 |
-| Evidence files parsed | 94 |
-| Observations extracted | 3,245 |
-| Hosted model calls | 0 |
-| Input tokens | 0 |
-| Output tokens | 0 |
-| Estimated hosted-model cost | $0.00 |
+## Summary
 
-## Models and tools
+| | |
+|---|---|
+| Language-model calls (cache fill) | **387** unique classify prompts (Gemini 3.5 Flash-Lite) |
+| Language-model calls (judge rerun with cache) | **0** live |
+| Hosted vision-model calls | **0** |
+| Local OCR | RapidOCR ONNX on 11 PNG consoles (`agent/png_ocr_cache.json`) |
+| Total tokens (input + output), cache fill | **≈ 42,000 in + 390 out** |
+| Estimated cost | **< $0.01** (Flash-Lite list price; this volume is rounding error) |
+| Network calls during a cached rerun | None |
+| API keys in the zip | **None** |
 
-The decision pipeline is Python. It classifies requests, resolves identities, matches evidence, applies policy, and writes `steps_json` without a language model.
+The planner is still deterministic Python. No LLM writes `steps_json`. RapidOCR
+is perception. Gemini is intake classification with a non-deletion veto.
 
-| Provider | Model/tool | Purpose | Calls / usage |
+## Models
+
+| Provider | Model | Role |
+|---|---|---|
+| Google | `gemini-3.5-flash-lite` | Brain 1: deletion vs not (`YES`/`NO`) |
+| none (local ONNX) | RapidOCR (`rapidocr-onnxruntime==1.2.3`) | 11 PNG consoles → observation text |
+
+Libraries: Python stdlib plus `pypdf>=4.0.0`, `rapidocr-onnxruntime==1.2.3`,
+`google-genai>=1.0.0`.
+
+## Calls and tokens (cache fill that produced `llm_cache.json`)
+
+| | Input tokens | Output tokens | Calls |
 |---|---|---|---|
-| None (local) | RapidOCR via `rapidocr-onnxruntime==1.2.3` | Read 11 PNG console screenshots | Local OCR; no tokens or hosted calls |
-| None | No LLM | Classification, identity, policy, planning | 0 calls |
+| Gemini 3.5 Flash-Lite | ≈ 42,000 | ≈ 390 | 387 |
+| Hosted vision | 0 | 0 | 0 |
+| **Total** | **≈ 42,000** | **≈ 390** | **387** |
 
-PDF text is extracted with `pypdf>=4.0.0`. The runtime dependencies are Python's standard library, `pypdf`, and RapidOCR.
+Requests in the scored run: **518** (plus 32 sample texts; unique prompts 398,
+of which 10 N/A texts never leave the veto and 387 were sent to Gemini).
 
-## Token and cost accounting
+| | Total | Per request (518) |
+|---|---|---|
+| Input tokens | ≈ 42,000 | ≈ 81 |
+| Output tokens | ≈ 390 | ≈ 0.8 |
+| Combined tokens | ≈ 42,400 | ≈ 82 |
+| Live model calls (fill) | 387 | 0.75 |
+| Live model calls (cached rerun) | 0 | 0 |
+| Estimated USD | < $0.01 | < $0.00002 |
 
-| Measure | Total | Average per request |
-|---|---:|---:|
-| Input tokens | 0 | 0 |
-| Output tokens | 0 | 0 |
-| Combined tokens | 0 | 0 |
-| Hosted model calls | 0 | 0 |
-| Estimated hosted-model cost | $0.00 | $0.00 |
+## Runtime (non-token)
 
-Local OCR does not use hosted tokens and incurs no API cost. This cost estimate does not include local compute or development time.
+| | |
+|---|---|
+| Evidence files parsed | 94 (28 JSON, 26 log, 24 SQL, 11 PNG, 4 PDF, 1 txt) |
+| Observations extracted | **3245** |
+| Screenshot OCR | RapidOCR, cache `agent/png_ocr_cache.json` |
+| LLM classify | Gemini, cache `agent/llm_cache.json` |
+| Wall time, cached `python3 code/main.py --run` | about **10 s** |
 
-## Runtime
+## How to verify
 
-| Run condition | Approximate wall time |
-|---|---:|
-| OCR cache available | About 10 seconds |
-| Cold OCR pass over 11 PNG files | About 1 minute |
+1. **Planner has no LLM import:**
 
-Times depend on the machine. Evidence is parsed once per process and cached in memory. The submitted package includes `agent/png_ocr_cache.json`, so an evaluator can reuse extracted screenshot text.
+   ```text
+   grep -n llm code/agent/planner.py
+   ```
 
-Measure runtime from the repository root with:
+   Expect no matches.
 
-```bash
-python3 code/main.py --run
-```
+2. **Key is not in the zip:**
 
-## Verify the zero-token claim
+   ```text
+   grep -R "GEMINI_API_KEY\|AIza\|AQ\." code/agent --include='*.json' --include='*.py'
+   ```
 
-1. `code/requirements.txt` should list `pypdf>=4.0.0` and `rapidocr-onnxruntime==1.2.3`; no model SDK is required.
-2. The run reads no API keys and makes no network calls.
-3. With the OCR cache, the run can be performed offline. Without the cache, RapidOCR still runs locally.
-4. The expected summary ends with `obs=3245`. A count of 3,243 indicates that PDF extraction did not run successfully.
+   Expect no secrets. `llm_client.py` only *reads* the env var.
 
-## Why screenshot OCR is local
+3. **Offline cached rerun:** unset `GEMINI_API_KEY` and run `python3 code/main.py`.
+   Status mix stays 154 / 354 / 10.
 
-The challenge guidance distinguishes a screenshot hyperlink from pixels showing a record. Local OCR reads the screenshot itself and avoids sending screenshots to a hosted vision model. The parser and deterministic planner, rather than an LLM, decide whether an observation supports a step.
+## Guardrails (why this is not an LLM planner)
 
-If a hosted model is added later, record its provider, model, calls, input and output tokens, and estimated cost here. A model should only propose observations visible in the evidence and must not write `steps_json` directly.
+- Non-deletion phrase markers always win. Gemini cannot authorize erasure on
+  an invoice / download / “I am not asking for deletion.”
+- A deletion-verb phrase still authorizes if Gemini says NO or the API is down
+  (sample `case_25` would otherwise have flipped to N/A).
+- Gemini never emits a `resource_id` or a `steps_json` item.

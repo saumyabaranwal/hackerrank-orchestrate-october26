@@ -13,6 +13,11 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
 
+# Surface parser misses in the run summary. An unreadable file is not proof
+# the record is absent — the planner must not treat silence as ABSENT unless
+# we actually parsed a snapshot.
+PARSE_ISSUES: list[str] = []
+
 from .identity import EMAIL_RE, HASH_RE, USER_RE, normalize_email, normalize_hash, normalize_phone
 
 ISO_RE = re.compile(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z")
@@ -1055,6 +1060,7 @@ def parse_evidence_file(path: Path, file_id: str, captured_at: Optional[datetime
     suffix = path.suffix.lower()
     name = path.name.lower()
     if not path.exists():
+        PARSE_ISSUES.append(f"{file_id}: missing {path}")
         return []
     try:
         if suffix == ".sql":
@@ -1073,6 +1079,7 @@ def parse_evidence_file(path: Path, file_id: str, captured_at: Optional[datetime
             return parse_pdf(path, file_id, captured_at)
         if suffix == ".png":
             return parse_png(path, file_id, captured_at)
-    except Exception:
+    except Exception as exc:
+        PARSE_ISSUES.append(f"{file_id}: {type(exc).__name__}: {exc}")
         return []
     return []

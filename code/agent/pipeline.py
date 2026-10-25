@@ -247,6 +247,13 @@ def write_output(dataset_dir: Path, dest: Path) -> str:
         writer.writerows(out_rows)
     counts = Counter(row["deletion_status"] for row in out_rows)
     try:
+        from .parsers import PARSE_ISSUES
+
+        if PARSE_ISSUES:
+            print(f"parser issues ({len(PARSE_ISSUES)}): " + "; ".join(PARSE_ISSUES[:8]))
+    except Exception:
+        pass
+    try:
         from .llm_client import usage_stats
 
         stats = usage_stats()
