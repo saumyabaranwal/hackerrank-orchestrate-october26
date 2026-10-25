@@ -3,9 +3,10 @@
 
     python3 code/evaluation/main.py
 
-Scores the 32 public sample cases against sample_output.csv and runs three
-additional probes we designed (classifier N/A, historical identity, extra-id
-precision). Does not read organizer-only files.
+Scores the 32 public sample cases against sample_output.csv and runs team
+tests TC1–TC7 (classifier N/A, historical identity, extra-id precision,
+output order, audit cutoff, case_55 restore unknown, PII unknown≠clear).
+Does not read organizer-only files.
 """
 
 from __future__ import annotations
@@ -199,6 +200,25 @@ def team_case_backup_unknown_not_blocked(dataset: Path) -> tuple[bool, str]:
     return True, "case_55 does not treat archive presence as restore blocked/allowed"
 
 
+def team_case_pii_unknown_not_clear() -> tuple[bool, str]:
+    """Missing identifier fields are unknown, not proof of redaction."""
+    from agent.parsers import pii_from_mapping
+
+    if pii_from_mapping({}) is not None:
+        return False, "empty mapping should be unknown"
+    if pii_from_mapping({"resource_id": "support_1", "ticket_id": "CS-1"}) is not None:
+        return False, "no identifier fields should be unknown"
+    if pii_from_mapping(None) is not None or pii_from_mapping("not-a-dict") is not None:
+        return False, "non-dict should be unknown"
+    if pii_from_mapping({"email": None, "phone": None}) is not False:
+        return False, "identifier keys present but empty should be explicit-clear"
+    if pii_from_mapping({"email": "a@b.com"}) is not True:
+        return False, "populated email should be exposed"
+    if pii_from_mapping({"result": "ANONYMIZED"}) is not False:
+        return False, "ANONYMIZED result should be explicit-clear"
+    return True, "pii_from_mapping: unknown / explicit-clear / exposed"
+
+
 def main() -> None:
     dataset = ROOT / "dataset"
     print("Public sample (32 cases vs sample_output.csv)")
@@ -217,6 +237,7 @@ def main() -> None:
         ("TC4 output row order", team_case_output_order(dataset)),
         ("TC5 evidence cutoff", team_case_audit_cutoff(dataset)),
         ("TC6 case_55 restore unknown", team_case_backup_unknown_not_blocked(dataset)),
+        ("TC7 PII unknown not clear", team_case_pii_unknown_not_clear()),
     ]
     failed = 0
     for name, (ok, detail) in cases:

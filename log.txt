@@ -1084,3 +1084,225 @@ branch=main
 repo_root=/home/user
 worktree=main
 parent_agent=none
+
+## [2026-10-25T04:10:00Z] Final interview guide + log.txt rating
+
+User Prompt (verbatim, secrets redacted):
+cool i think we are done now right? ... make the interview prep guides again ... Also rate my log.txt file now
+
+Agent Response Summary:
+Confirmed build is done. Rewrote interview_prep.md for the shipped agent (OCR, window gate, parser fixes, Q&A). Re-rated log.txt: stronger on later engineering ownership (parser, PNG, window), still thin early prompts; overall B / B+ process, interview still the swing.
+
+Actions:
+* Write code/evaluation/interview_prep.md
+* Present that file
+
+Context:
+tool=Arena.ai Agent Mode
+model=Arena.ai Agent Mode
+branch=main
+repo_root=/home/user
+worktree=main
+parent_agent=none
+
+## [2026-10-25T04:40:00Z] Case 55 restore unknown; PII unknown≠false; report refresh; TC4-6
+
+User Prompt (verbatim, secrets redacted):
+Keep case 55 ambiguity explicit. Refresh eval report 61/63 INCOMPLETE and 3244 vs 3245. Regression for order and cutoff. Unknown PII not false.
+
+Agent Response Summary:
+Restore steps only when restore_allowed is known — case_55 no longer cites evidence_32 as blocked. PII/flow unknown no longer emits VERIFY redacted/disabled. Report matches output (61/63 INCOMPLETE, obs 3245). Added TC4 order, TC5 cutoff, TC6 case_55. Sample still 32/32 18/32 extra=0. Regenerated output.csv 154/354/10. Rebuilt code.zip.
+
+Actions:
+* planner.py unknown vs false for pii/enabled/restore
+* evaluation/main.py TC4-TC6
+* Refresh evaluation_report.md and usage_report.md
+* python3 code/main.py --run
+
+Context:
+tool=Arena.ai Agent Mode
+model=Arena.ai Agent Mode
+branch=main
+repo_root=/home/user
+worktree=main
+parent_agent=none
+
+## [2026-10-25T05:10:00Z] Final README, usage, evaluation, interview guide
+
+User Prompt (verbatim, secrets redacted):
+AFTER THIS MAKE A FINAL README, FINAL USAGE REPORT, FINAL EVALUATION REPORT AND VERY VERY DETAILED FINAL INTERVIEW GUIDE
+
+Agent Response Summary:
+Wrote judge-facing finals from the attached 518-row output.csv (154/354/10, obs=3245) and live sample 32/32 18/32 extra=0 TC1-TC6. README lists pypdf + RapidOCR 1.2.3, window gate, unknown≠false. usage_report.md 0 tokens / $0 / cache. evaluation_report.md 61/63 INCOMPLETE, case_55 no restore, 14-case miss table. interview_prep.md is the study guide (not a zip slot): glossary, every function, 19 ambiguities, Q&A, case walks, agent pitch, uniqueness ≠ Copilot. log.txt not rewritten.
+
+Actions:
+* write_file code/README.md
+* write_file code/evaluation/usage_report.md
+* write_file code/evaluation/evaluation_report.md
+* write_file code/evaluation/interview_prep.md
+* interview_fragilities.md pointer: section 8 stale (OCR is on)
+
+Context:
+tool=Arena.ai Agent Mode
+model=Arena.ai Agent Mode
+branch=main
+repo_root=/home/user
+worktree=main
+parent_agent=none
+
+## [2026-10-25T05:40:00Z] Parser PII unknown≠clear
+
+User Prompt (verbatim, secrets redacted):
+The PII uncertainty fix is incomplete. pii_from_mapping() still returns False when it finds no recognized PII fields. Parser should return unknown when the record does not provide enough information, and only return clear when evidence explicitly supports it. README still describes three team test cases vs six.
+
+Agent Response Summary:
+pii_from_mapping now returns Optional[bool]: None if identifier keys are absent, False only when those keys exist and are empty/null/redacted or result is ANONYMIZED/REDACTED, True when values are present. Callers no longer bool() missing fields into False. Sample still 32/32 18/32 extra=0. Full run 154/354/10 obs=3245; 12 cases dropped VERIFY_RECORD_REDACTED that had been inferred from missing fields (no extras). Added TC7. README/eval already listed six; now TC1–TC7.
+
+Actions:
+* parsers.py pii_from_mapping three-state + caller cleanup
+* evaluation/main.py TC7
+* regenerate output.csv
+* reports/README/interview_prep TC7
+
+Context:
+tool=Arena.ai Agent Mode
+model=Arena.ai Agent Mode
+branch=main
+repo_root=/home/user
+worktree=main
+parent_agent=none
+
+## [2026-10-25T05:50:00Z] Rebuild code.zip for submit
+
+User Prompt (verbatim, secrets redacted):
+are we good to go or not
+
+Agent Response Summary:
+Verified 518 154/354/10, sample 32/32 18/32 extra=0, TC1-TC7 PASS, case_55/61/63 as intended. code.zip was stale vs parsers/README/reports; rebuilt zip contents of code/ with OCR cache, no pycache, no interview files, no extra code/ wrapper. Ready to submit output.csv + code.zip + log.txt as chat_transcript.
+
+Actions:
+* zip -r code.zip from code/ contents
+* verify zip bytes match disk
+
+Context:
+tool=Arena.ai Agent Mode
+model=Arena.ai Agent Mode
+branch=main
+repo_root=/home/user
+worktree=main
+parent_agent=none
+
+## [2026-10-25T05:29:45Z] SESSION START
+
+tool=Arena.ai Agent Mode
+model=Arena.ai Agent Mode
+Repo Root: /home/user
+Branch: main
+Worktree: main
+Parent Agent: none
+Language: py
+Time Remaining: not configured
+
+## [2026-10-25T05:35:00Z] Staff Q&A on API calls vs local Python
+
+User Prompt (verbatim, secrets redacted):
+shloka0603: local python vs AI API calls would affect score; code.zip should have ai api calls since that would be a complete
+
+Agent Response Summary:
+Eligibility unchanged. Python-only still qualifies. Staff message is a scoring slice, not a DQ. Advised against dummy OpenAI and against an LLM planner that invents leftovers.
+
+Actions:
+* Appended this turn to log.txt
+
+Context:
+tool=Arena.ai Agent Mode
+model=Arena.ai Agent Mode
+branch=main
+repo_root=/home/user
+worktree=main
+parent_agent=none
+
+## [2026-10-25T05:50:00Z] Rejected LLM planner patch; later added bounded Gemini classify
+
+User Prompt (verbatim, secrets redacted):
+[large Gemini planner/evidence-enrichment diff] then: i created an api key from gemini / bro we need to include an LLM / [API key redacted]
+
+Agent Response Summary:
+Did not apply the pasted patch (LLM-first classify without N/A veto, LLM inventing resource ids, LLM writing steps_json). Added a bounded Gemini path: llm_client.py + classify.py only. Non-deletion markers always win; deletion-verb phrase still authorizes if Gemini says NO (sample case_25). Planner/evidence unchanged. Filled llm_cache.json (387 YES/NO, gemini-3.5-flash-lite). Key never written to zip, code, or this log. Sample 32/32 extra=0; 518 mix 154/354/10 unchanged.
+
+Actions:
+* write_file code/agent/llm_client.py
+* edit classify.py, pipeline.py, requirements.txt
+* cache fill; usage_report.md + README updated
+* rebuilt code.zip with llm_cache.json, no secrets
+
+Context:
+tool=Arena.ai Agent Mode
+model=Arena.ai Agent Mode
+branch=main
+repo_root=/home/user
+worktree=main
+parent_agent=none
+
+## [2026-10-25T06:20:00Z] How to run; Windows 518 run; zip file list
+
+User Prompt (verbatim, secrets redacted):
+how to add api key in the code? / do i put it in any .env / llm cache json missing / what exact files in agent and evaluation / Windows run output 154/354/10 llm_cache=1042 / git bash evaluation path error / README TC7 vs runner TC6
+
+Agent Response Summary:
+Do not hardcode the key or ship .env. Env var GEMINI_API_KEY only; judges use llm_cache.json. Listed zip contents (13 agent files including caches; evaluation only main.py + two reports; no interview, no pycache). Windows full run matched shipped mix; llm_cache=1042 means cache is present. Git Bash must use python code/evaluation/main.py with forward slashes. TC7 exists in this tree; Windows evaluation/main.py was stale.
+
+Actions:
+* present_file llm_cache.json for download
+* rebuilt code.zip after planner activity_id citation + parse-issue logging
+
+Context:
+tool=Arena.ai Agent Mode
+model=Arena.ai Agent Mode
+branch=main
+repo_root=/home/user
+worktree=main
+parent_agent=none
+
+## [2026-10-25T06:40:00Z] Review items; 19 missed gold steps; activity citation
+
+User Prompt (verbatim, secrets redacted):
+Review: activity claims as state; Gemini override; reports/cache mismatch; --dataset missing; then how to work on the 19 missed steps
+
+Agent Response Summary:
+Windows review was a stale checkout. This classify.py already lets keyword YES beat Gemini NO; main.py already has --dataset/--out; reports here already document Gemini. Planner now cites activity_id for unique DELETE/ANONYMIZE claims instead of a random later system file. Unique assignment kept. Investigated 19 sample misses: 3 gold-only ids; 6 analytics are identifier-null with tied ANONYMIZE events; remaining accounts are activity-only or substring (account_41038). Do not recover them (extra-step risk). Sample still 32/32 18/32 extra=0.
+
+Actions:
+* planner.py cite activity_id
+* policy unknown category no silent DELETE
+* parsers PARSE_ISSUES
+* llm_client retry same model
+* python3 code/evaluation/main.py TC1-TC7 PASS
+* python3 code/main.py --run 154/354/10 obs=3245
+
+Context:
+tool=Arena.ai Agent Mode
+model=Arena.ai Agent Mode
+branch=main
+repo_root=/home/user
+worktree=main
+parent_agent=none
+
+## [2026-10-25T05:29:46Z] Update log.txt (catch-up)
+
+User Prompt (verbatim, secrets redacted):
+update log.txt
+
+Agent Response Summary:
+Appended catch-up entries for Gemini classify, Windows run, zip layout, review follow-ups, and the 19-miss investigation. Did not rewrite prior log text. No secrets.
+
+Actions:
+* Appended to log.txt
+
+Context:
+tool=Arena.ai Agent Mode
+model=Arena.ai Agent Mode
+branch=main
+repo_root=/home/user
+worktree=main
+parent_agent=none
